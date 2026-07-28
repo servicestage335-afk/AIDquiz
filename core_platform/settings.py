@@ -128,6 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'core_platform' / 'static']
+
+CSRF_TRUSTED_ORIGINS = ['https://aidquiz-production.up.railway.app', 'https://*.railway.app']
 
 # Email / Brevo SMTP Settings
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')

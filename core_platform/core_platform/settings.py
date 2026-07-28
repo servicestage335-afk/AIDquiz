@@ -8,6 +8,7 @@ SECRET_KEY = 'django-insecure-SET-YOUR-SECRET-KEY-HERE'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://aidquiz-production.up.railway.app', 'https://*.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
