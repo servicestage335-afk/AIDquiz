@@ -362,9 +362,10 @@ def edit_user(request, user_id):
 
 @login_required
 def admin_update_profile(request):
-    if request.method == 'POST' and request.user.is_staff:
+    if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
+        password = request.POST.get('password')
         if username and email:
             if User.objects.filter(username=username).exclude(id=request.user.id).exists():
                 return JsonResponse({'status': 'error', 'message': 'Username is already taken.'}, status=400)
@@ -372,6 +373,8 @@ def admin_update_profile(request):
                 return JsonResponse({'status': 'error', 'message': 'Email is already taken.'}, status=400)
             request.user.username = username
             request.user.email = email
+            if password:
+                request.user.set_password(password)
             request.user.save()
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': 'Username and email are required.'}, status=400)
