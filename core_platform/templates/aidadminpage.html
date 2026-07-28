@@ -40,6 +40,22 @@
         <section id="users" class="admin-section hidden">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold">User Management</h1>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700" onclick="toggleModal('addUserModal')">Add User</button>
+            </div>
+            <div id="addUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+                <div class="bg-white p-6 rounded-2xl w-96">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Add User</h2>
+                        <button class="text-gray-400 font-bold" onclick="toggleModal('addUserModal')">✕</button>
+                    </div>
+                    <form id="add-user-form" action="{% url 'add_user' %}" method="POST" onsubmit="handleAjaxForm(event, () => toggleModal('addUserModal'))">
+                        {% csrf_token %}
+                        <input type="text" name="username" class="w-full p-2 border rounded mb-2" placeholder="Username" required>
+                        <input type="email" name="email" class="w-full p-2 border rounded mb-2" placeholder="Email" required>
+                        <input type="password" name="password" class="w-full p-2 border rounded mb-2" placeholder="Password" required>
+                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Create User</button>
+                    </form>
+                </div>
             </div>
             <div id="editUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
                 <div class="bg-white p-6 rounded-2xl w-96">
@@ -58,10 +74,18 @@
             </div>
             <div class="glass p-6 rounded-2xl border border-white/20">
                 <table class="w-full">
+                    <thead>
+                        <tr class="border-b text-left text-gray-600">
+                            <th class="p-2">Username</th>
+                            <th class="p-2">Email</th>
+                            <th class="p-2 text-right">Actions</th>
+                        </tr>
+                    </thead>
                     <tbody id="user-table-body">
                         {% for u in users %}
-                            <tr id="user-{{ u.id }}">
-                                <td class="p-2">{{ u.username }}</td>
+                            <tr id="user-{{ u.id }}" class="border-b">
+                                <td class="p-2 font-medium">{{ u.username }}</td>
+                                <td class="p-2 text-gray-600">{{ u.email }}</td>
                                 <td class="p-2 text-right flex gap-2 justify-end items-center">
                                     <button class="bg-indigo-500 text-white px-2 py-1 rounded text-xs" onclick="openEditUserModal('{{ u.id }}', '{{ u.username }}', '{{ u.email }}')">Edit</button>
                                     <form method="POST" action="{% url 'delete_user' u.id %}" onsubmit="handleAjaxDelete(event, '#user-{{ u.id }}')" class="inline">
