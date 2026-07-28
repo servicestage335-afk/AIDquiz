@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
+
+    <!-- Assignment Workflow Panel -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Assign Quiz to Users</h2>
+        
+        <form method="POST" action="{% url 'assign_quiz' %}">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="quiz" class="block text-sm font-medium text-gray-700 mb-2">Select Quiz</label>
+                <select name="quiz" id="quiz" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Select a Quiz --</option>
+                    {% for quiz in quizzes %}
+                        <option value="{{ quiz.id }}">{{ quiz.title }} ({{ quiz.subject.name }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Users</label>
+                <div class="border border-gray-300 rounded-md p-4 max-h-64 overflow-y-auto">
+                    {% if users %}
+                        {% for user in users %}
+                            <div class="flex items-center mb-2">
+                                <input type="checkbox" name="users" value="{{ user.id }}" id="user_{{ user.id }}" class="mr-2">
+                                <label for="user_{{ user.id }}" class="cursor-pointer">{{ user.username }} ({{ user.email }})</label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-gray-500">No regular users available.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors">
+                Assign Quiz to Selected Users
+            </button>
+        </form>
+    </div>
+
+    <!-- Subjects and Quizzes Overview -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4">Subjects and Quizzes Overview</h2>
+        
+        {% if subjects %}
+            <div class="space-y-6">
+                {% for subject in subjects %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="text-xl font-medium text-blue-600">{{ subject.name }}</h3>
+                                <p class="text-gray-600">{{ subject.description }}</p>
+                            </div>
+                            <a href="{% url 'admin_dashboard' %}#subject-{{ subject.id }}" class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">Add Users</a>
+                        </div>
+                        
+                        {% if subject.quizzes.all %}
+                            <div class="ml-4 space-y-2">
+                                {% for quiz in subject.quizzes.all %}
+                                    <div class="bg-gray-50 p-3 rounded">
+                                        <h4 class="font-medium">{{ quiz.title }}</h4>
+                                        <p class="text-sm text-gray-500">Passing Score: {{ quiz.passing_score }} | Questions: {{ quiz.questions.count }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-gray-500 ml-4">No quizzes available for this subject.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500">No subjects available. Please create subjects and quizzes first.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

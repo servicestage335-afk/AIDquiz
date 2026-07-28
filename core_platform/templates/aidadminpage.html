@@ -1,0 +1,659 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100" id="admin-root">
+<aside class="w-full md:w-64 bg-white/60 backdrop-blur-md border-r border-white/40 p-6">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-xl font-bold text-gray-800">LMS Admin</h2>
+        <button class="md:hidden p-2" onclick="document.getElementById('nav-menu').classList.toggle('hidden')">☰</button>
+    </div>
+    <nav id="nav-menu" class="hidden md:block space-y-4">
+            <button data-section="overview" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium">Overview</button>
+            <button data-section="users" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium">Users</button>
+            <button data-section="assignments" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium">Quiz Assignments</button>
+            <button data-section="quizzes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium">Content</button>
+            <button data-section="profile-settings" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium">Profile Settings</button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8">
+        <div id="toast-container" class="fixed top-4 right-4 z-[99999] space-y-2"></div>
+
+        <section id="overview" class="admin-section hidden">
+            <h1 class="text-3xl font-bold mb-8 text-gray-900">Overview</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                    <h3 class="text-gray-500 font-medium">Total Users</h3>
+                    <p class="text-4xl font-bold mt-2">{{ users.count }}</p>
+                </div>
+                <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                    <h3 class="text-gray-500 font-medium">Total Quizzes</h3>
+                    <p class="text-4xl font-bold mt-2">{{ total_quizzes }}</p>
+                </div>
+                <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                    <h3 class="text-gray-500 font-medium">Subjects</h3>
+                    <p class="text-4xl font-bold mt-2">{{ subjects.count }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="users" class="admin-section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold">User Management</h1>
+            </div>
+            <div id="editUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+                <div class="bg-white p-6 rounded-2xl w-96">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Edit User</h2>
+                        <button class="text-gray-400 font-bold" onclick="toggleModal('editUserModal')">✕</button>
+                    </div>
+                    <form id="edit-user-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" id="edit-user-id">
+                        <input type="text" name="username" id="edit-username" class="w-full p-2 border rounded mb-2" placeholder="Username">
+                        <input type="email" name="email" id="edit-email" class="w-full p-2 border rounded mb-2" placeholder="Email">
+                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-white/20">
+                <table class="w-full">
+                    <tbody id="user-table-body">
+                        {% for u in users %}
+                            <tr id="user-{{ u.id }}">
+                                <td class="p-2">{{ u.username }}</td>
+                                <td class="p-2 text-right flex gap-2 justify-end items-center">
+                                    <button class="bg-indigo-500 text-white px-2 py-1 rounded text-xs" onclick="openEditUserModal('{{ u.id }}', '{{ u.username }}', '{{ u.email }}')">Edit</button>
+                                    <form method="POST" action="{% url 'delete_user' u.id %}" onsubmit="handleAjaxDelete(event, '#user-{{ u.id }}')" class="inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="assignments" class="admin-section hidden">
+            <h1 class="text-3xl font-bold mb-8">Quiz Assignments</h1>
+            <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                <form id="assignment-form" class="flex flex-col md:flex-row gap-4 items-end">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-bold mb-1">User</label>
+                        <select name="user_id" class="p-2 border rounded w-48">
+                            {% for u in users %}
+                                <option value="{{ u.id }}">{{ u.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Quiz</label>
+                        <select name="quiz_id" class="p-2 border rounded w-48">
+                            {% for q in quizzes %}
+                                <option value="{{ q.id }}">{{ q.title }} {% if q.theme %}({{ q.theme.name }}){% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-xl">Assign</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="quizzes" class="admin-section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold">Content Management</h1>
+                <button onclick="toggleModal('addThemeModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl transition">+ Add Theme</button>
+            </div>
+            <div id="themes-container" class="space-y-6">
+                {% for theme in quiz_themes %}
+                    <div class="glass rounded-2xl border border-white/20 bg-white/80 backdrop-blur-md overflow-hidden shadow-sm" id="theme-{{ theme.id }}">
+                        <!-- Theme Header / Collapsible Toggle -->
+                        <div class="w-full px-6 py-4 bg-indigo-50/70 border-b border-indigo-100 flex justify-between items-center cursor-pointer select-none" onclick="const content = document.getElementById('theme-content-{{ theme.id }}'); const icon = document.getElementById('theme-icon-{{ theme.id }}'); content.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-xl font-bold text-indigo-950">{{ theme.name }}</h2>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 bg-indigo-200 text-indigo-800 rounded-full">
+                                    {{ theme.quizzes.count }} quiz{{ theme.quizzes.count|pluralize }}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition add-quiz-to-theme-btn" data-theme-id="{{ theme.id }}" onclick="event.stopPropagation(); openAddQuizToThemeModal('{{ theme.id }}')">+ Add Quiz</button>
+                                <form method="POST" action="{% url 'delete_theme' theme.id %}" onsubmit="handleAjaxDelete(event, '#theme-{{ theme.id }}')" class="inline" onclick="event.stopPropagation()">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Delete Theme</button>
+                                </form>
+                                <span class="text-xs text-gray-500 font-medium">Click to collapse/expand</span>
+                                <svg id="theme-icon-{{ theme.id }}" class="w-5 h-5 text-indigo-700 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Quizzes Container -->
+                        <div id="theme-content-{{ theme.id }}" class="p-6 space-y-4">
+                            {% if theme.quizzes.all %}
+                                <div class="grid grid-cols-1 gap-4">
+                                    {% for quiz in theme.quizzes.all %}
+                                        <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-sm border border-gray-100" id="quiz-{{ quiz.id }}">
+                                            <div>
+                                                <h3 class="text-lg font-bold text-gray-900">{{ quiz.title }}</h3>
+                                                <p class="text-sm text-gray-500 mt-0.5">{{ quiz.questions.count }} Question{{ quiz.questions.count|pluralize }}</p>
+                                            </div>
+                                            <div class="flex gap-2 items-center">
+                                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition" onclick="toggleModal('questionsModal-{{ quiz.id }}')">Manage Questions</button>
+                                                <form method="POST" action="{% url 'delete_quiz' quiz.id %}" onsubmit="handleAjaxDelete(event, '#quiz-{{ quiz.id }}')" class="inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Delete Quiz</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-sm text-gray-400 italic py-2">No quizzes associated with this theme yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="profile-settings" class="admin-section hidden">
+            <h1 class="text-3xl font-bold mb-8">Profile Settings</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+                <!-- Edit Admin Account Details -->
+                <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Edit Account Details</h2>
+                    <form id="admin-profile-form" class="space-y-4">
+                        {% csrf_token %}
+                        <div>
+                            <label class="block text-sm font-bold mb-1">Username</label>
+                            <input type="text" name="username" id="profile-username" value="{{ request.user.username }}" class="w-full p-2 border rounded-xl" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-1">Email Address</label>
+                            <input type="email" name="email" id="profile-email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl" required>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Save Account Details</button>
+                        <div id="profile-update-status" class="text-sm font-medium mt-2"></div>
+                    </form>
+                </div>
+
+                <!-- Password Modification via Email Verification -->
+                <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Change Password</h2>
+                    <p class="text-sm text-gray-600 mb-4">Step 1: Send verification code to your email.</p>
+                    
+                    <div id="profile-step-1" class="space-y-4">
+                        <button type="button" id="send-code-btn" class="w-full bg-indigo-600 text-white p-2.5 rounded-xl font-medium hover:bg-indigo-700 transition">Send Verification Code</button>
+                        <div id="send-code-status" class="text-sm font-medium mt-2"></div>
+                    </div>
+
+                    <!-- Verify Code Form -->
+                    <form id="verify-code-form" class="space-y-4 mt-4 border-t pt-4">
+                        {% csrf_token %}
+                        <div>
+                            <label class="block text-sm font-bold mb-1">Verification Code</label>
+                            <div class="flex gap-2">
+                                <input type="text" name="verification_code" id="verification-code-input" placeholder="6-digit code" maxlength="6" class="flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
+                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Verify Code</button>
+                            </div>
+                            <small id="debug-code-hint" class="text-indigo-600 text-xs block mt-1"></small>
+                        </div>
+                        <div id="verify-code-status" class="text-sm font-medium mt-1"></div>
+                    </form>
+
+                    <!-- Reset Password Form (Unlocked after verification) -->
+                    <form id="verify-reset-form" class="space-y-4 mt-4 border-t pt-4">
+                        {% csrf_token %}
+                        <div>
+                            <label class="block text-sm font-bold mb-1">New Password</label>
+                            <input type="password" name="new_password" id="new-password-input" placeholder="Enter new password" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled required>
+                        </div>
+                        <button type="submit" id="reset-password-btn" class="w-full bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-medium transition opacity-50 cursor-not-allowed" disabled>Update Password</button>
+                        <div id="verify-reset-status" class="text-sm font-medium mt-2"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Modals -->
+{% for theme in quiz_themes %}
+    {% for quiz in theme.quizzes.all %}
+    <div id="questionsModal-{{ quiz.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-2xl w-[600px] max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Manage Questions: {{ quiz.title }}</h2>
+                <button onclick="toggleModal('questionsModal-{{ quiz.id }}')" class="font-bold">×</button>
+            </div>
+            <form class="mb-4 add-question-form" data-quiz-id="{{ quiz.id }}">
+                {% csrf_token %}
+                <input type="text" name="question_text" placeholder="Question Text" class="w-full p-2 border rounded" required>
+                <button type="submit" class="bg-blue-600 text-white mt-2 px-4 py-1 rounded">Add Question</button>
+            </form>
+            <div class="space-y-2">
+                {% for q in quiz.questions.all %}
+                    <div class="border rounded p-2" id="question-{{ q.id }}">
+                        <div class="flex justify-between items-center cursor-pointer">
+                            <span class="font-bold flex-grow" onclick="this.parentElement.nextElementSibling.classList.toggle('hidden')">{{ q.question_text }}</span>
+                            <div class="flex gap-2 items-center">
+                                <button type="button" class="px-2 py-1 text-[10px] font-bold text-white bg-blue-500 rounded hover:bg-blue-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Edit</button>
+                                <div class="hidden p-4 bg-white shadow-xl border rounded-2xl absolute z-50 w-96 left-1/2 -translate-x-1/2 top-10">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-bold text-sm">Edit Question</h3>
+                                        <button type="button" class="text-xs font-bold text-gray-400" onclick="this.parentElement.parentElement.classList.add('hidden')">✕</button>
+                                    </div>
+                                    <input type="text" value="{{ q.question_text }}" class="w-full p-2 border rounded text-sm mb-2">
+                                    <button type="button" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                </div>
+                                <form method="POST" action="{% url 'delete_question' q.id %}" onsubmit="handleAjaxDelete(event, '#question-{{ q.id }}')" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="px-2 py-1 text-[10px] font-bold text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="hidden mt-2 p-2 bg-gray-50 rounded space-y-2">
+                            {% for a in q.answers.all %}
+                                <div class="flex justify-between items-center text-sm bg-white p-2 rounded shadow-sm border border-gray-100" id="answer-{{ a.id }}">
+                                    <span class="{% if a.is_correct %}text-green-700 font-semibold{% else %}text-gray-700{% endif %}">
+                                        {{ a.answer_text }}
+                                    </span>
+                                    <div class="flex gap-1 items-center">
+                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-indigo-500 rounded hover:bg-indigo-600">Edit</button>
+                                        <form method="POST" action="{% url 'delete_answer' a.id %}" onsubmit="handleAjaxDelete(event, '#answer-{{ a.id }}')" class="inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                                        </form>
+                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white {% if a.is_correct %}bg-gray-500{% else %}bg-green-500{% endif %} rounded hover:opacity-90">
+                                            {% if a.is_correct %}Unmark{% else %}Correct{% endif %}
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <button type="button" class="w-full text-center text-xs text-blue-600 font-bold p-2 border-2 border-dashed border-blue-200 rounded" onclick="toggleModal('addAnswerModal-{{ q.id }}')">+ Add Answer</button>
+                        </div>
+                        <div id="addAnswerModal-{{ q.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+                            <div class="bg-white p-6 rounded-2xl w-96">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-lg font-bold">Add Answer</h2>
+                                    <button type="button" class="text-gray-400 font-bold" onclick="toggleModal('addAnswerModal-{{ q.id }}')">✕</button>
+                                </div>
+                                <form class="add-answer-form" data-question-id="{{ q.id }}">
+                                    {% csrf_token %}
+                                    <input type="text" name="answer_text" placeholder="Answer Text" class="w-full p-2 border rounded text-sm mb-2" required>
+                                    <label class="flex items-center gap-2 mb-4">
+                                        <input type="checkbox" name="is_correct" value="true" class="w-4 h-4">
+                                        <span class="text-sm">Mark as Correct</span>
+                                    </label>
+                                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl">Save Answer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endfor %}
+
+<div id="addQuizToThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-2xl w-96">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Add Quiz to Theme</h2>
+            <button class="text-gray-400 font-bold" onclick="toggleModal('addQuizToThemeModal')">✕</button>
+        </div>
+        <form id="add-quiz-to-theme-form">
+            {% csrf_token %}
+            <input type="hidden" name="theme_id" id="modal-theme-id">
+            <div class="mb-3">
+                <label class="block text-sm font-bold mb-1">Quiz Title</label>
+                <input type="text" name="title" placeholder="Quiz Title" class="w-full p-2 border rounded-xl" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-1">Passing Score (%)</label>
+                <input type="number" name="passing_score" value="50" class="w-full p-2 border rounded-xl" required>
+            </div>
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white w-full p-2.5 rounded-xl font-medium transition">Save Quiz</button>
+        </form>
+    </div>
+</div>
+
+<div id="addThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-2xl w-96">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Add Quiz Theme</h2>
+            <button class="text-gray-400 font-bold" onclick="toggleModal('addThemeModal')">✕</button>
+        </div>
+        <form id="theme-form">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Theme Name" class="w-full p-2 border rounded-xl mb-2" required>
+            <textarea name="description" placeholder="Description (Optional)" class="w-full p-2 border rounded-xl mb-2"></textarea>
+            <button type="submit" class="bg-indigo-600 text-white w-full p-2 rounded-xl">Save Theme</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
+    
+    // Tab switching and localStorage persistence
+    const ACTIVE_SECTION_KEY = 'aidadmin_active_section';
+
+    function switchSection(sectionId) {
+        document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
+        const target = document.getElementById(sectionId);
+        if (target) {
+            target.classList.remove('hidden');
+            localStorage.setItem(ACTIVE_SECTION_KEY, sectionId);
+        }
+    }
+
+    document.querySelectorAll('.admin-nav').forEach(btn => {
+        btn.onclick = () => {
+            switchSection(btn.dataset.section);
+        };
+    });
+
+    // Restore active section on load
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+        switchSection(savedSection);
+    });
+
+    // Helpers
+    async function postAjax(url, formData) {
+        return await fetch(url, { method: 'POST', body: formData, headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': '{{ csrf_token }}'} });
+    }
+
+    async function refreshAdminContent() {
+        try {
+            const resp = await fetch(window.location.href, { headers: {'X-Requested-With': 'XMLHttpRequest'} });
+            if (resp.ok) {
+                const html = await resp.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Update main sections content dynamically without full page reload
+                const newMain = doc.querySelector('main');
+                const currentMain = document.querySelector('main');
+                if (newMain && currentMain) {
+                    currentMain.innerHTML = newMain.innerHTML;
+                }
+                
+                // Re-bind forms and buttons after DOM update
+                bindDynamicEvents();
+            } else {
+                location.reload();
+            }
+        } catch (err) {
+            location.reload();
+        }
+    }
+
+    async function handleAjaxForm(e, successCallback) {
+        e.preventDefault();
+        const form = e.target;
+        if (form.dataset.confirm && !confirm(form.dataset.confirm)) return;
+        
+        try {
+            const resp = await postAjax(form.action || form.dataset.url, new FormData(form));
+            if (resp.ok) {
+                if (successCallback) successCallback();
+                await refreshAdminContent();
+                // Ensure current active section remains visible after refresh
+                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                switchSection(savedSection);
+            } else {
+                alert('Action failed.');
+            }
+        } catch (err) {
+            alert('An error occurred.');
+        }
+    }
+
+    async function handleAjaxDelete(e, elementSelector) {
+        e.preventDefault();
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        const form = e.target;
+        try {
+            const resp = await postAjax(form.action, new FormData(form));
+            if (resp.ok) {
+                const el = document.querySelector(elementSelector);
+                if (el) {
+                    el.remove();
+                } else {
+                    await refreshAdminContent();
+                }
+                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                switchSection(savedSection);
+            } else {
+                alert('Delete failed.');
+            }
+        } catch (err) {
+            alert('An error occurred.');
+        }
+    }
+
+    function bindDynamicEvents() {
+        // Re-attach theme form
+        const themeForm = document.getElementById('theme-form');
+        if (themeForm) {
+            themeForm.onsubmit = (e) => handleAjaxForm(e, () => {
+                const modal = document.getElementById('addThemeModal');
+                if (modal) modal.classList.add('hidden');
+            });
+        }
+
+        // Re-attach add quiz to theme form
+        const addQuizForm = document.getElementById('add-quiz-to-theme-form');
+        if (addQuizForm) {
+            addQuizForm.onsubmit = (e) => handleAjaxForm(e, () => {
+                const modal = document.getElementById('addQuizToThemeModal');
+                if (modal) modal.classList.add('hidden');
+            });
+        }
+
+        // Re-attach assignment form
+        const assignmentForm = document.getElementById('assignment-form');
+        if (assignmentForm) {
+            assignmentForm.onsubmit = (e) => handleAjaxForm(e, () => {
+                alert('Quiz assigned successfully!');
+            });
+        }
+
+        // Re-attach edit user form
+        const editUserForm = document.getElementById('edit-user-form');
+        if (editUserForm) {
+            editUserForm.onsubmit = (e) => {
+                e.preventDefault();
+                const uId = document.getElementById('edit-user-id').value;
+                handleAjaxForm(e, () => {
+                    toggleModal('editUserModal');
+                });
+                form.action = `/aidadminpage/edit_user/${uId}/`;
+            };
+        }
+
+        // Re-attach question forms
+        document.querySelectorAll('.add-question-form').forEach(form => {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const fd = new FormData(e.target);
+                fd.append('quiz_id', e.target.dataset.quizId);
+                fetch('{% url "add_question" %}', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': '{{ csrf_token }}'}
+                }).then(async resp => {
+                    if (resp.ok) {
+                        await refreshAdminContent();
+                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                        switchSection(savedSection);
+                    }
+                });
+            };
+        });
+
+        // Re-attach answer forms
+        document.querySelectorAll('.add-answer-form').forEach(form => {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const fd = new FormData(e.target);
+                fd.append('question_id', e.target.dataset.questionId);
+                fetch('{% url "add_answer" %}', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': '{{ csrf_token }}'}
+                }).then(async resp => {
+                    if (resp.ok) {
+                        await refreshAdminContent();
+                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                        switchSection(savedSection);
+                    }
+                });
+            };
+        });
+    }
+
+    // Initial binding
+    bindDynamicEvents();
+
+    // Edit user modal opener helper
+    window.openEditUserModal = function(id, username, email) {
+        document.getElementById('edit-user-id').value = id;
+        document.getElementById('edit-username').value = username;
+        document.getElementById('edit-email').value = email;
+        const form = document.getElementById('edit-user-form');
+        form.action = `/aidadminpage/edit_user/${id}/`;
+        toggleModal('editUserModal');
+    };
+
+    window.openAddQuizToThemeModal = function(themeId) {
+        document.getElementById('modal-theme-id').value = themeId;
+        toggleModal('addQuizToThemeModal');
+    };
+
+    // Profile Settings Handlers
+    const adminProfileForm = document.getElementById('admin-profile-form');
+    if (adminProfileForm) {
+        adminProfileForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const statusDiv = document.getElementById('profile-update-status');
+            statusDiv.textContent = "Updating profile details...";
+            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
+            try {
+                const resp = await postAjax('{% url "admin_update_profile" %}', new FormData(e.target));
+                const data = await resp.json();
+                if (resp.ok && data.status === 'success') {
+                    statusDiv.textContent = "Profile details updated successfully!";
+                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
+                    setTimeout(() => refreshAdminContent(), 1000);
+                } else {
+                    statusDiv.textContent = data.message || "Failed to update profile details.";
+                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+                }
+            } catch (err) {
+                statusDiv.textContent = "An error occurred.";
+                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+            }
+        };
+    }
+
+    const sendCodeBtn = document.getElementById('send-code-btn');
+    if (sendCodeBtn) {
+        sendCodeBtn.onclick = async () => {
+            const statusDiv = document.getElementById('send-code-status');
+            statusDiv.textContent = "Sending verification code...";
+            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
+            try {
+                const resp = await postAjax('{% url "admin_send_verification_code" %}', new FormData());
+                const data = await resp.json();
+                if (resp.ok && data.status === 'success') {
+                    statusDiv.textContent = "Verification code sent to your email successfully!";
+                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
+                    if (data.debug_code) {
+                        document.getElementById('debug-code-hint').textContent = `(Debug Code: ${data.debug_code})`;
+                    }
+                } else {
+                    statusDiv.textContent = "Failed to send verification code.";
+                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+                }
+            } catch (err) {
+                statusDiv.textContent = "An error occurred.";
+                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+            }
+        };
+    }
+
+    const verifyCodeForm = document.getElementById('verify-code-form');
+    if (verifyCodeForm) {
+        verifyCodeForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const statusDiv = document.getElementById('verify-code-status');
+            statusDiv.textContent = "Verifying code...";
+            statusDiv.className = "text-sm font-medium mt-1 text-blue-600";
+            try {
+                const resp = await postAjax('{% url "admin_verify_code_only" %}', new FormData(e.target));
+                const data = await resp.json();
+                if (resp.ok && data.status === 'success') {
+                    statusDiv.textContent = "Code verified! Password modification unlocked.";
+                    statusDiv.className = "text-sm font-medium mt-1 text-green-600";
+                    
+                    // Unlock password inputs & reset button
+                    const pwdInput = document.getElementById('new-password-input');
+                    const resetBtn = document.getElementById('reset-password-btn');
+                    pwdInput.disabled = false;
+                    pwdInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                    resetBtn.disabled = false;
+                    resetBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    statusDiv.textContent = data.message || "Invalid or expired verification code.";
+                    statusDiv.className = "text-sm font-medium mt-1 text-red-600";
+                }
+            } catch (err) {
+                statusDiv.textContent = "An error occurred.";
+                statusDiv.className = "text-sm font-medium mt-1 text-red-600";
+            }
+        };
+    }
+
+    const verifyResetForm = document.getElementById('verify-reset-form');
+    if (verifyResetForm) {
+        verifyResetForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const statusDiv = document.getElementById('verify-reset-status');
+            statusDiv.textContent = "Updating password...";
+            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
+            try {
+                const fd = new FormData(e.target);
+                fd.append('verification_code', document.getElementById('verification-code-input').value);
+                const resp = await postAjax('{% url "admin_verify_and_reset_password" %}', fd);
+                const data = await resp.json();
+                if (resp.ok && data.status === 'success') {
+                    statusDiv.textContent = "Password changed successfully!";
+                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
+                    e.target.reset();
+                    document.getElementById('verify-code-form').reset();
+                    document.getElementById('new-password-input').disabled = true;
+                    document.getElementById('new-password-input').classList.add('bg-gray-100', 'cursor-not-allowed');
+                    document.getElementById('reset-password-btn').disabled = true;
+                    document.getElementById('reset-password-btn').classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    statusDiv.textContent = data.message || "Failed to update password.";
+                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+                }
+            } catch (err) {
+                statusDiv.textContent = "An error occurred.";
+                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
+            }
+        };
+    }
+</script>
+{% endblock %}
+

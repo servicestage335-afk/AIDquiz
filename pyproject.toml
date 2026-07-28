@@ -1,0 +1,10 @@
+[project]
+name = "AIDquiz"
+version = "0.1.0"
+description = "AID Quiz Platform"
+dependencies = [
+    "django==6.0.3",
+    "python-dotenv>=1.0.0",
+    "sib-api-v3-sdk>=7.3.0",
+]
+requires-python = ">=3.12"

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">{{ quiz.title }} - Results</h1>
+    <p class="text-gray-600 mb-8">Subject: {{ quiz.subject.name }} | Your Score: {{ assignment.score }}/100</p>
+
+    <div class="space-y-6">
+        {% for question in questions %}
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-lg font-medium mb-4">{{ question.question_text }}</h3>
+            <div class="space-y-2">
+                {% for answer in question.answers.all %}
+                <div class="p-2 rounded {% if answer.is_correct %}bg-green-100{% else %}bg-gray-50{% endif %}">
+                    {{ answer.answer_text }}
+                    {% if answer.is_correct %} <span class="text-green-600 font-bold">(Correct)</span> {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-8">
+        <a href="{% url 'dashboard' %}" class="text-blue-500 hover:underline">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
