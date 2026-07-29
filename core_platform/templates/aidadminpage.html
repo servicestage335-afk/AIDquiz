@@ -102,26 +102,26 @@
 
         <section id="assignments" class="admin-section hidden">
             <h1 class="text-3xl font-bold mb-8">Quiz Assignments</h1>
-            <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                <form id="assignment-form" class="flex flex-col md:flex-row gap-4 items-end">
+            <div class="glass p-4 sm:p-6 rounded-2xl border border-white/20 bg-white">
+                <form id="assignment-form" class="flex flex-col gap-4 items-stretch sm:flex-row sm:items-end">
                     {% csrf_token %}
-                    <div>
+                    <div class="flex-1">
                         <label class="block text-sm font-bold mb-1">User</label>
-                        <select name="user_id" class="p-2 border rounded w-48">
+                        <select name="user_id" class="p-2 border rounded w-full sm:w-48">
                             {% for u in users %}
                                 <option value="{{ u.id }}">{{ u.username }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <label class="block text-sm font-bold mb-1">Quiz</label>
-                        <select name="quiz_id" class="p-2 border rounded w-48">
+                        <select name="quiz_id" class="p-2 border rounded w-full sm:w-48">
                             {% for q in quizzes %}
                                 <option value="{{ q.id }}">{{ q.title }} {% if q.theme %}({{ q.theme.name }}){% endif %}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-xl">Assign</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition">Assign</button>
                 </form>
             </div>
         </section>
@@ -221,9 +221,9 @@
                         {% csrf_token %}
                         <div>
                             <label class="block text-sm font-bold mb-1">Verification Code</label>
-                            <div class="flex gap-2">
-                                <input type="text" name="verification_code" id="verification-code-input" placeholder="6-digit code" maxlength="6" class="flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Verify Code</button>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input type="text" name="verification_code" id="verification-code-input" placeholder="6-digit code" maxlength="6" class="w-full sm:flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
+                                <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Verify Code</button>
                             </div>
                             <small id="debug-code-hint" class="text-indigo-600 text-xs block mt-1"></small>
                         </div>
