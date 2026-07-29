@@ -31,4 +31,5 @@ urlpatterns = [
     path('aidadminpage/verify_and_reset_password/', views.admin_verify_and_reset_password, name='admin_verify_and_reset_password'),
     path('aidadminpage/update_profile/', views.admin_update_profile, name='admin_update_profile'),
     path('view_results/<int:assignment_id>/', views.view_results, name='view_results'),
+    path('profile/', views.user_profile_view, name='user_profile'),
 ]

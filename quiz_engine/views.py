@@ -362,10 +362,9 @@ def edit_user(request, user_id):
 
 @login_required
 def admin_update_profile(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_staff:
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password')
         if username and email:
             if User.objects.filter(username=username).exclude(id=request.user.id).exists():
                 return JsonResponse({'status': 'error', 'message': 'Username is already taken.'}, status=400)
@@ -373,8 +372,6 @@ def admin_update_profile(request):
                 return JsonResponse({'status': 'error', 'message': 'Email is already taken.'}, status=400)
             request.user.username = username
             request.user.email = email
-            if password:
-                request.user.set_password(password)
             request.user.save()
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': 'Username and email are required.'}, status=400)
@@ -417,8 +414,12 @@ def admin_verify_code_only(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
+def user_profile_view(request):
+    return render(request, 'user_profile.html')
+
+@login_required
 def admin_verify_and_reset_password(request):
-    if request.method == 'POST' and request.user.is_staff:
+    if request.method == 'POST':
         code = request.POST.get('verification_code')
         new_password = request.POST.get('new_password')
         profile = UserProfile.objects.filter(user=request.user).first()
