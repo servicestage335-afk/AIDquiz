@@ -354,7 +354,7 @@
             <h2 class="text-xl font-bold">Add Quiz Theme</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addThemeModal')">✕</button>
         </div>
-        <form id="theme-form">
+        <form id="theme-form" action="{% url 'add_theme' %}" method="POST">
             {% csrf_token %}
             <input type="text" name="name" placeholder="Theme Name" class="w-full p-2 border rounded-xl mb-2" required>
             <textarea name="description" placeholder="Description (Optional)" class="w-full p-2 border rounded-xl mb-2"></textarea>
@@ -486,9 +486,25 @@
         // Re-attach assignment form
         const assignmentForm = document.getElementById('assignment-form');
         if (assignmentForm) {
-            assignmentForm.onsubmit = (e) => handleAjaxForm(e, () => {
-                alert('Quiz assigned successfully!');
-            });
+            assignmentForm.onsubmit = (e) => {
+                e.preventDefault();
+                const fd = new FormData(e.target);
+                fetch('{% url "assign_quiz" %}', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': '{{ csrf_token }}'}
+                }).then(async resp => {
+                    const data = await resp.json();
+                    if (resp.ok && data.status === 'success') {
+                        alert('Quiz assigned successfully!');
+                        assignmentForm.reset();
+                    } else {
+                        alert(data.message || 'Failed to assign quiz.');
+                    }
+                }).catch(err => {
+                    alert('An error occurred while assigning quiz.');
+                });
+            };
         }
 
         // Re-attach edit user form
