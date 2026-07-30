@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 
 db_url = os.getenv('DATABASE_URL')
 if not db_url:
-    print("ERROR: DATABASE_URL not set in environment.")
+    print("ERROR: DATABASE_URL not set.")
     exit(1)
 
 url = urlparse(db_url)
@@ -19,25 +19,16 @@ sqlite_path = 'db.sqlite3'
 if not os.path.exists(sqlite_path):
     sqlite_path = 'core_platform/db.sqlite3'
 
-if not os.path.exists(sqlite_path):
-    print("ERROR: No local sqlite3 database found.")
-    exit(1)
+print(f"Reading SQLite: {sqlite_path}")
+s_conn = sqlite3.connect(sqlite_path)
+s_cursor = s_conn.cursor()
 
-print(f"Reading from local SQLite: {sqlite_path}")
-sqlite_conn = sqlite3.connect(sqlite_path)
-sqlite_cursor = sqlite_conn.cursor()
-
-print(f"Connecting to Postgres at {host}:{port}/{dbname}...")
-pg_conn = psycopg2.connect(
-    dbname=dbname,
-    user=user,
-    password=password,
-    host=host,
-    port=port
-)
+print("Connecting to Postgres...")
+pg_conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
 pg_cursor = pg_conn.cursor()
 
-# Migrate tables in correct foreign key order and clear existing pg data
+pg_cursor.execute("SET session_replication_role = 'replica';")
+
 tables_order = [
     'quiz_engine_assignment',
     'quiz_engine_userprofile',
@@ -46,53 +37,48 @@ tables_order = [
     'quiz_engine_quiz',
     'quiz_engine_quiztheme',
     'quiz_engine_subject',
-    'django_admin_log',
-    'auth_user_user_permissions',
-    'auth_user_groups',
-    'auth_group_permissions',
-    'auth_user',
-    'auth_group',
-    'django_content_type',
-    'django_session',
-    'django_migrations'
+    'auth_user'
 ]
 
-# Clear postgres tables first to avoid conflicts
-for table in tables_order:
-    try:
-        pg_cursor.execute(f"TRUNCATE TABLE {table} CASCADE;")
-        pg_conn.commit()
-    except Exception:
-        pg_conn.rollback()
-
-# Reverse order for insertion (parents first)
 insert_order = list(reversed(tables_order))
 
 for table in insert_order:
     try:
-        sqlite_cursor.execute(f"SELECT * FROM {table};")
+        s_cursor.execute(f"SELECT * FROM {table};")
     except Exception:
         continue
     
-    rows = sqlite_cursor.fetchall()
+    rows = s_cursor.fetchall()
     if not rows:
         continue
     
-    print(f"Migrating table: {table} ({len(rows)} rows)")
-    sqlite_cursor.execute(f"PRAGMA table_info({table});")
-    columns = [info[1] for info in sqlite_cursor.fetchall()]
+    print(f"Migrating table with boolean casting: {table} ({len(rows)} rows)")
+    s_cursor.execute(f"PRAGMA table_info({table});")
+    col_info = s_cursor.fetchall()
+    columns = [info[1] for info in col_info]
+    col_types = [info[2].upper() for info in col_info]
     
     col_str = ", ".join([f'"{c}"' for c in columns])
     placeholders = ", ".join(["%s"] * len(columns))
     
     for row in rows:
+        # Cast boolean integers (0/1) to Python bools for postgres boolean columns
+        converted_row = []
+        for val, ctype in zip(row, col_types):
+            if 'BOOL' in ctype and val is not None:
+                converted_row.append(bool(val))
+            else:
+                converted_row.append(val)
+                
         try:
-            pg_cursor.execute(f"INSERT INTO {table} ({col_str}) VALUES ({placeholders});", row)
+            pg_cursor.execute(f"INSERT INTO {table} ({col_str}) VALUES ({placeholders}) ON CONFLICT DO NOTHING;", tuple(converted_row))
             pg_conn.commit()
         except Exception as e:
             pg_conn.rollback()
-            print(f"Error inserting into {table}: {e}")
+            print(f"Error in {table}: {e}")
 
-print("Data migration completed successfully!")
-sqlite_conn.close()
+pg_cursor.execute("SET session_replication_role = 'origin';")
+pg_conn.commit()
+s_conn.close()
 pg_conn.close()
+print("Full database migration with boolean casting completed successfully!")
