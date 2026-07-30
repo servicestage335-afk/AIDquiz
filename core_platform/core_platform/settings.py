@@ -51,14 +51,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core_platform.wsgi.application'
 
 # Database
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR.parent / 'db.sqlite3',
-        'OPTIONS': {
-            'timeout': 30,  # Increase timeout to handle file locking
-        },
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR.parent / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
 # Use cookie-based sessions to avoid SQLite session table disk I/O errors.
