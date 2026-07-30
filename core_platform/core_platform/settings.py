@@ -57,10 +57,11 @@ DATABASES = {
     'default': dj_database_url.config(
         env='DATABASE_URL',
         default='sqlite:///' + str(BASE_DIR.parent / 'db.sqlite3'),
-        conn_max_age=600,
-        ssl_require=True
+        conn_max_age=600
     )
 }
+if 'postgresql' in DATABASES['default']['ENGINE']:
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 # Use cookie-based sessions to avoid SQLite session table disk I/O errors.
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
