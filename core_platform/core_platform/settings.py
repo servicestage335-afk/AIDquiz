@@ -60,8 +60,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-if 'postgresql' in DATABASES['default']['ENGINE']:
-    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 # Use cookie-based sessions to avoid SQLite session table disk I/O errors.
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

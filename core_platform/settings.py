@@ -98,8 +98,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-if 'postgresql' in DATABASES['default']['ENGINE']:
-    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 
 # Password validation
