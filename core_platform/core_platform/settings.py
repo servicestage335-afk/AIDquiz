@@ -62,7 +62,7 @@ DATABASES = {
 }
 
 # Use cookie-based sessions to avoid SQLite session table disk I/O errors.
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
