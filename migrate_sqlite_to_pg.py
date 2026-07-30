@@ -37,28 +37,38 @@ pg_conn = psycopg2.connect(
 )
 pg_cursor = pg_conn.cursor()
 
-# Migrate tables in correct foreign key order
+# Migrate tables in correct foreign key order and clear existing pg data
 tables_order = [
-    'django_migrations',
-    'django_content_type',
-    'auth_permission',
-    'auth_group',
-    'auth_user',
-    'auth_group_permissions',
-    'auth_user_groups',
-    'auth_user_user_permissions',
-    'django_admin_log',
-    'django_session',
-    'quiz_engine_subject',
-    'quiz_engine_quiztheme',
-    'quiz_engine_quiz',
-    'quiz_engine_question',
-    'quiz_engine_answer',
+    'quiz_engine_assignment',
     'quiz_engine_userprofile',
-    'quiz_engine_assignment'
+    'quiz_engine_answer',
+    'quiz_engine_question',
+    'quiz_engine_quiz',
+    'quiz_engine_quiztheme',
+    'quiz_engine_subject',
+    'django_admin_log',
+    'auth_user_user_permissions',
+    'auth_user_groups',
+    'auth_group_permissions',
+    'auth_user',
+    'auth_group',
+    'django_content_type',
+    'django_session',
+    'django_migrations'
 ]
 
+# Clear postgres tables first to avoid conflicts
 for table in tables_order:
+    try:
+        pg_cursor.execute(f"TRUNCATE TABLE {table} CASCADE;")
+        pg_conn.commit()
+    except Exception:
+        pg_conn.rollback()
+
+# Reverse order for insertion (parents first)
+insert_order = list(reversed(tables_order))
+
+for table in insert_order:
     try:
         sqlite_cursor.execute(f"SELECT * FROM {table};")
     except Exception:
@@ -77,11 +87,11 @@ for table in tables_order:
     
     for row in rows:
         try:
-            pg_cursor.execute(f"INSERT INTO {table} ({col_str}) VALUES ({placeholders}) ON CONFLICT DO NOTHING;", row)
+            pg_cursor.execute(f"INSERT INTO {table} ({col_str}) VALUES ({placeholders});", row)
             pg_conn.commit()
         except Exception as e:
             pg_conn.rollback()
-            # print(f"Skipped row in {table}: {e}")
+            print(f"Error inserting into {table}: {e}")
 
 print("Data migration completed successfully!")
 sqlite_conn.close()
