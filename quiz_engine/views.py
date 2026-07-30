@@ -133,6 +133,12 @@ def password_reset_confirm_view(request):
 
 class LoginView(auth_views.LoginView):
     template_name = 'login.html'
+    def form_valid(self, form):
+        logger.info(f"Login success for user: {form.get_user().username}")
+        return super().form_valid(form)
+    def form_invalid(self, form):
+        logger.warning(f"Login failed: {form.errors}")
+        return super().form_invalid(form)
     def get_success_url(self): return '/aidadminpage/' if self.request.user.is_staff else '/dashboard/'
 
 def logout_view(request):
