@@ -6,7 +6,6 @@ def populate_pg():
     db_url = os.getenv('DATABASE_URL')
     if not db_url:
         print("ERROR: DATABASE_URL environment variable is not set.")
-        print("Please run: export DATABASE_URL='postgres://...' or set it in your environment.")
         return
 
     url = urlparse(db_url)
@@ -21,7 +20,6 @@ def populate_pg():
     cursor = conn.cursor()
 
     try:
-        # Subject
         subject_name = "Management Environnemental - Norme ISO 14001"
         cursor.execute("SELECT id FROM quiz_engine_subject WHERE name = %s;", (subject_name,))
         subject = cursor.fetchone()
@@ -35,7 +33,6 @@ def populate_pg():
             subject_id = subject[0]
             print(f"Subject already exists: ID {subject_id}")
 
-        # Quiz - Linking to theme ID 1
         quiz_title = "Validation des Compétences : Management Environnemental ISO 14001"
         cursor.execute("SELECT id FROM quiz_engine_quiz WHERE title = %s;", (quiz_title,))
         quiz = cursor.fetchone()
@@ -43,12 +40,15 @@ def populate_pg():
             cursor.execute("INSERT INTO quiz_engine_quiz (subject_id, title, theme_id, passing_score) VALUES (%s, %s, %s, %s) RETURNING id;", 
                            (subject_id, quiz_title, 7, 70))
             quiz_id = cursor.fetchone()[0]
-            print(f"Inserted Quiz: ID {quiz_id}")
+            print(f"Inserted Quiz: ID {quiz_id} under theme_id 7")
         else:
             quiz_id = quiz[0]
-            print(f"Quiz already exists: ID {quiz_id}")
+            cursor.execute("UPDATE quiz_engine_quiz SET theme_id = 7 WHERE id = %s;", (quiz_id,))
+            print(f"Quiz already exists: ID {quiz_id}, updated theme_id to 7")
 
-        # Questions & Answers
+        # Clear existing questions for this quiz to avoid duplication on restart
+        cursor.execute("DELETE FROM quiz_engine_question WHERE quiz_id = %s;", (quiz_id,))
+
         questions_data = [
             {
                 "text": "L’objectif principal de la norme ISO 14001 est :",
@@ -152,7 +152,7 @@ def populate_pg():
                                (question_id, ans_text, is_correct))
 
         conn.commit()
-        print("ISO 14001 Quiz successfully inserted into PostgreSQL!")
+        print("ISO 14001 Quiz restarted and successfully inserted into PostgreSQL under theme id 7!")
 
     except Exception as e:
         conn.rollback()
