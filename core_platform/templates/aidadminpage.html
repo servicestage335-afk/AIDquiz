@@ -288,14 +288,28 @@
                                         {{ a.answer_text }}
                                     </span>
                                     <div class="flex gap-1 items-center">
-                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-indigo-500 rounded hover:bg-indigo-600">Edit</button>
+                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-indigo-500 rounded hover:bg-indigo-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Edit</button>
+                                        <div class="hidden p-4 bg-white shadow-xl border rounded-2xl absolute z-50 w-96 left-1/2 -translate-x-1/2 top-10">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <h3 class="font-bold text-sm">Edit Answer</h3>
+                                                <button type="button" class="text-xs font-bold text-gray-400" onclick="this.parentElement.parentElement.classList.add('hidden')">✕</button>
+                                            </div>
+                                            <form method="POST" action="{% url 'edit_answer' a.id %}" onsubmit="handleAjaxForm(event, () => this.parentElement.classList.add('hidden'))">
+                                                {% csrf_token %}
+                                                <input type="text" name="answer_text" value="{{ a.answer_text }}" class="w-full p-2 border rounded text-sm mb-2" required>
+                                                <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                            </form>
+                                        </div>
                                         <form method="POST" action="{% url 'delete_answer' a.id %}" onsubmit="handleAjaxDelete(event, '#answer-{{ a.id }}')" class="inline">
                                             {% csrf_token %}
                                             <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
                                         </form>
-                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white {% if a.is_correct %}bg-gray-500{% else %}bg-green-500{% endif %} rounded hover:opacity-90">
-                                            {% if a.is_correct %}Unmark{% else %}Correct{% endif %}
-                                        </button>
+                                        <form method="POST" action="{% url 'toggle_correct_answer' a.id %}" onsubmit="handleAjaxForm(event)" class="inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white {% if a.is_correct %}bg-gray-500{% else %}bg-green-500{% endif %} rounded hover:opacity-90">
+                                                {% if a.is_correct %}Unmark{% else %}Correct{% endif %}
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             {% endfor %}

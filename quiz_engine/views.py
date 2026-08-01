@@ -334,6 +334,31 @@ def add_answer(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
+def edit_answer(request, id):
+    if request.method == 'POST':
+        text = request.POST.get('answer_text')
+        print(f"DEBUG: edit_answer called for id={id}, text={text}")
+        answer = Answer.objects.filter(pk=id).first()
+        if answer and text:
+            answer.answer_text = text
+            answer.save()
+            print(f"DEBUG: Answer {id} updated successfully")
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
+@login_required
+def toggle_correct_answer(request, id):
+    if request.method == 'POST':
+        print(f"DEBUG: toggle_correct_answer called for id={id}")
+        answer = Answer.objects.filter(pk=id).first()
+        if answer:
+            answer.is_correct = not answer.is_correct
+            answer.save()
+            print(f"DEBUG: Answer {id} is_correct toggled to {answer.is_correct}")
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
+@login_required
 def delete_answer(request, id):
     if request.method == 'POST':
         print(f"DEBUG: delete_answer called for id={id}")
