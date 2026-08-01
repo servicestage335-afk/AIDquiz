@@ -26,7 +26,7 @@ def populate():
         quiz = cursor.fetchone()
         if not quiz:
             cursor.execute("INSERT INTO quiz_engine_quiz (subject_id, title, theme_id, passing_score) VALUES (?, ?, ?, ?)", 
-                           (subject_id, quiz_title, 1, 70))
+                           (subject_id, quiz_title, 7, 70))
             quiz_id = cursor.lastrowid
             print(f"Inserted Quiz: ID {quiz_id}")
         else:
