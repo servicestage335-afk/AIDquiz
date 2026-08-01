@@ -107,7 +107,7 @@
                     {% csrf_token %}
                     <div class="flex-1">
                         <label class="block text-sm font-bold mb-1">User</label>
-                        <select name="user_id" class="p-2 border rounded w-full sm:w-48">
+                        <select name="user_id" class="p-2 border rounded-xl w-full">
                             {% for u in users %}
                                 <option value="{{ u.id }}">{{ u.username }}</option>
                             {% endfor %}
@@ -115,7 +115,7 @@
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm font-bold mb-1">Quiz</label>
-                        <select name="quiz_id" class="p-2 border rounded w-full sm:w-48">
+                        <select name="quiz_id" class="p-2 border rounded-xl w-full">
                             {% for q in quizzes %}
                                 <option value="{{ q.id }}">{{ q.title }} {% if q.theme %}({{ q.theme.name }}){% endif %}</option>
                             {% endfor %}
