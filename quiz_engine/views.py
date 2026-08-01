@@ -264,25 +264,33 @@ def add_quiz_to_theme(request):
         theme_id = request.POST.get('theme_id')
         title = request.POST.get('title')
         passing_score = request.POST.get('passing_score', 50)
+        print(f"DEBUG: add_quiz_to_theme called with theme_id={theme_id}, title={title}, passing_score={passing_score}")
         
         if theme_id and title:
             theme = get_object_or_404(QuizTheme, pk=theme_id)
             subject, created = Subject.objects.get_or_create(name=theme.name)
-            Quiz.objects.create(
+            quiz = Quiz.objects.create(
                 theme=theme,
                 subject=subject,
                 title=title,
                 passing_score=int(passing_score)
             )
+            print(f"DEBUG: Quiz created successfully with ID {quiz.id}")
             return JsonResponse({'status': 'success'})
+        else:
+            print("DEBUG: add_quiz_to_theme failed - missing theme_id or title")
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
 def delete_quiz(request, id):
     if request.method == 'POST':
+        print(f"DEBUG: delete_quiz called for id={id}")
         quiz = Quiz.objects.filter(pk=id).first()
         if quiz:
             quiz.delete()
+            print(f"DEBUG: Quiz {id} deleted successfully")
+        else:
+            print(f"DEBUG: Quiz {id} not found for deletion")
         if is_ajax(request):
             return JsonResponse({'status': 'success'})
         return redirect('aidadminpage')
@@ -291,17 +299,22 @@ def delete_quiz(request, id):
 @login_required
 def add_question(request):
     q_id, text = request.POST.get('quiz_id'), request.POST.get('question_text')
+    print(f"DEBUG: add_question called with quiz_id={q_id}, text={text}")
     if q_id and text:
-        Question.objects.create(quiz_id=q_id, question_text=text)
+        q = Question.objects.create(quiz_id=q_id, question_text=text)
+        print(f"DEBUG: Question created with ID {q.id}")
         return JsonResponse({'status': 'success'})
+    print("DEBUG: add_question failed - missing quiz_id or text")
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
 def delete_question(request, id):
     if request.method == 'POST':
+        print(f"DEBUG: delete_question called for id={id}")
         question = Question.objects.filter(pk=id).first()
         if question:
             question.delete()
+            print(f"DEBUG: Question {id} deleted successfully")
         if is_ajax(request):
             return JsonResponse({'status': 'success'})
         return redirect('aidadminpage')
@@ -312,17 +325,22 @@ def add_answer(request):
     q_id = request.POST.get('question_id')
     text = request.POST.get('answer_text')
     is_correct = request.POST.get('is_correct') == 'true'
+    print(f"DEBUG: add_answer called with question_id={q_id}, text={text}, is_correct={is_correct}")
     if q_id and text:
-        Answer.objects.create(question_id=q_id, answer_text=text, is_correct=is_correct)
+        ans = Answer.objects.create(question_id=q_id, answer_text=text, is_correct=is_correct)
+        print(f"DEBUG: Answer created with ID {ans.id}")
         return JsonResponse({'status': 'success'})
+    print("DEBUG: add_answer failed - missing question_id or text")
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
 def delete_answer(request, id):
     if request.method == 'POST':
+        print(f"DEBUG: delete_answer called for id={id}")
         answer = Answer.objects.filter(pk=id).first()
         if answer:
             answer.delete()
+            print(f"DEBUG: Answer {id} deleted successfully")
         if is_ajax(request):
             return JsonResponse({'status': 'success'})
         return redirect('aidadminpage')

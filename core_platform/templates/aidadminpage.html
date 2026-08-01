@@ -332,7 +332,7 @@
             <h2 class="text-xl font-bold">Add Quiz to Theme</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addQuizToThemeModal')">✕</button>
         </div>
-        <form id="add-quiz-to-theme-form">
+        <form id="add-quiz-to-theme-form" action="{% url 'add_quiz' %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="theme_id" id="modal-theme-id">
             <div class="mb-3">
