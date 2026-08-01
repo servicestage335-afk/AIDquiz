@@ -308,6 +308,19 @@ def add_question(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
+def edit_question(request, id):
+    if request.method == 'POST':
+        text = request.POST.get('question_text')
+        print(f"DEBUG: edit_question called for id={id}, text={text}")
+        question = Question.objects.filter(pk=id).first()
+        if question and text:
+            question.question_text = text
+            question.save()
+            print(f"DEBUG: Question {id} updated successfully")
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+
+@login_required
 def delete_question(request, id):
     if request.method == 'POST':
         print(f"DEBUG: delete_question called for id={id}")

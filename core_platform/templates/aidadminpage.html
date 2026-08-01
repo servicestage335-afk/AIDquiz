@@ -272,8 +272,11 @@
                                         <h3 class="font-bold text-sm">Edit Question</h3>
                                         <button type="button" class="text-xs font-bold text-gray-400" onclick="this.parentElement.parentElement.classList.add('hidden')">✕</button>
                                     </div>
-                                    <input type="text" value="{{ q.question_text }}" class="w-full p-2 border rounded text-sm mb-2">
-                                    <button type="button" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                    <form method="POST" action="{% url 'edit_question' q.id %}" onsubmit="handleAjaxForm(event, () => this.parentElement.classList.add('hidden'))">
+                                        {% csrf_token %}
+                                        <input type="text" name="question_text" value="{{ q.question_text }}" class="w-full p-2 border rounded text-sm mb-2" required>
+                                        <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                    </form>
                                 </div>
                                 <form method="POST" action="{% url 'delete_question' q.id %}" onsubmit="handleAjaxDelete(event, '#question-{{ q.id }}')" class="inline">
                                     {% csrf_token %}

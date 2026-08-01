@@ -19,6 +19,7 @@ urlpatterns = [
     path('aidadminpage/add_quiz_to_theme/', views.add_quiz_to_theme, name='add_quiz_to_theme'),
     path('aidadminpage/delete_quiz/<int:id>/', views.delete_quiz, name='delete_quiz'),
     path('aidadminpage/add_question/', views.add_question, name='add_question'),
+    path('aidadminpage/edit_question/<int:id>/', views.edit_question, name='edit_question'),
     path('aidadminpage/delete_question/<int:id>/', views.delete_question, name='delete_question'),
     path('aidadminpage/add_answer/', views.add_answer, name='add_answer'),
     path('aidadminpage/edit_answer/<int:id>/', views.edit_answer, name='edit_answer'),
