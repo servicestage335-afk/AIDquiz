@@ -230,13 +230,24 @@
 
     function handleContactSubmit(e) {
         e.preventDefault();
+        const formData = new FormData(e.target);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const org = formData.get('organization');
+        const userMessage = formData.get('message');
+
+        const subject = encodeURIComponent("Demande de catalogue / contact - " + org);
+        const body = encodeURIComponent(`Nom: ${name}\nEmail: ${email}\nOrganisation: ${org}\n\nMessage:\n${userMessage}`);
+        
         const successMsg = document.getElementById('contact-success-msg');
         successMsg.classList.remove('hidden');
+        
         setTimeout(() => {
+            window.location.href = `mailto:contact@aid-academy.com?subject=${subject}&body=${body}`;
             toggleModal('contactModal');
             successMsg.classList.add('hidden');
             e.target.reset();
-        }, 2500);
+        }, 1500);
     }
 </script>
 {% endblock %}
