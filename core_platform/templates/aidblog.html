@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+    <!-- Breadcrumbs / Tag -->
+    <div class="mb-6 flex items-center gap-2 text-sm text-slate-500 font-medium">
+        <a href="{% url 'dashboard' %}" class="hover:text-blue-600 transition">Accueil</a>
+        <span>/</span>
+        <span class="text-slate-800">Actualités & Articles</span>
+        <span>/</span>
+        <span class="text-blue-600 font-semibold">Renforcement des capacités en Afrique</span>
+    </div>
+
+    <!-- Article Header -->
+    <header class="mb-10 text-center md:text-left">
+        <div class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider rounded-full mb-4">
+            Académie AID • Renforcement des Capacités & Management
+        </div>
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+            Renforcement des capacités en Afrique : Comment AID accompagne la réussite des projets de développement
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-4xl">
+            Le succès des programmes et projets de développement en Afrique repose aujourd'hui sur un facteur clé : la haute performance de leurs équipes managériales. Face à des exigences internationales de plus en plus strictes, la formation continue des cadres n'est plus une option, c’est un levier stratégique majeur.
+        </p>
+    </header>
+
+    <!-- Featured Image Simulation / SEO Alt Text Reference -->
+    <div class="mb-12 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900 relative group">
+        <div class="aspect-w-16 aspect-h-9 w-full h-[350px] md:h-[450px] bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 flex items-center justify-center p-8 text-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-block px-4 py-1.5 bg-blue-600/80 text-white font-semibold text-xs tracking-wider uppercase rounded-full mb-4 backdrop-blur-md">
+                    Séminaires Exécutifs • Hammamet & Toute l'Afrique
+                </span>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
+                    Excellence Managériale et Gouvernance des Projets
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base">
+                    Illustration : Séminaire de formation des cadres et coordinateurs de projets à l'Académie AID.
+                </p>
+            </div>
+        </div>
+        <div class="bg-slate-800 px-6 py-3 text-xs text-slate-400 flex justify-between items-center border-t border-slate-700/60">
+            <span>📷 Référence Alt SEO : <code class="text-blue-400">formation-cadres-developpement-afrique-aid.jpg</code></span>
+            <span>Académie Internationale d’Innovation et de Développement (AID)</span>
+        </div>
+    </div>
+
+    <!-- Article Content Body -->
+    <article class="prose prose-slate lg:prose-lg max-w-none space-y-8 text-slate-700 leading-relaxed">
+        <p class="text-lg font-medium text-slate-800">
+            C’est précisément au cœur de cet enjeu que se positionne l’<strong>Académie Internationale d’Innovation et de Développement (AID)</strong>. En tant qu'institution spécialisée, AID conçoit et anime des programmes de formation d’excellence dédiés aux professionnels, coordonnateurs de projets, hauts fonctionnaires et gestionnaires de programmes sur tout le continent africain.
+        </p>
+
+        <section class="bg-white/80 backdrop-blur-md p-8 rounded-3xl border border-slate-200/80 shadow-sm my-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                <span class="w-2.5 h-8 bg-blue-600 rounded-full inline-block"></span>
+                Les activités phares d'AID : Un hub d’apprentissage et d’innovation
+            </h2>
+            <p class="mb-6">
+                L'approche d'AID repose sur une vision globale du développement des compétences. Nos activités ne se limitent pas à de la théorie ; elles englobent une dynamique complète d'accompagnement institutionnel :
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">01</div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Séminaires de formation intensifs</h3>
+                    <p class="text-sm text-slate-600">
+                        Des sessions immersives de haut niveau, organisées dans des cadres propices à l'apprentissage (notamment à Hammamet, Tunisie), réunissant des participants venus de toute l'Afrique.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">02</div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Ateliers et conventions institutionnelles</h3>
+                    <p class="text-sm text-slate-600">
+                        AID collabore activement avec des instituts d'enseignement supérieur et des centres de recherche (partenariats et conventions de coopération technique) pour créer des ponts solides entre l'expertise académique et les réalités du terrain.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">03</div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Échanges et partages d’expériences</h3>
+                    <p class="text-sm text-slate-600">
+                        Nos ateliers offrent une plateforme unique de networking, permettant aux cadres de différents pays africains de partager leurs bonnes pratiques et de bâtir des réseaux professionnels durables.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <span class="w-2.5 h-8 bg-indigo-600 rounded-full inline-block"></span>
+                Nos domaines d'expertise : Des formations adaptées aux défis du continent
+            </h2>
+            <p class="mb-6">
+                Pour répondre précisément aux critères d'exigence des grands bailleurs de fonds internationaux (Banque Mondiale, BAD, AFD, etc.), AID a structuré son catalogue autour des thématiques les plus critiques du management de projet moderne.
+            </p>
+
+            <div class="space-y-6">
+                <!-- Expertise 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-blue-500/20">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Politiques de sauvegarde environnementale et sociale</h3>
+                        <p class="text-slate-600">
+                            Le respect des normes environnementales et sociales est désormais un critère non négociable pour le déclenchement et le maintien des financements. Nos formations spécialisées permettent aux équipes de maîtriser les cadres de sauvegarde, d'anticiper les risques et de gérer efficacement les impacts communautaires sur le terrain.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Expertise 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-indigo-500/20">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Évaluation socio-économique des projets</h3>
+                        <p class="text-slate-600">
+                            Mesurer la rentabilité financière d'un projet ne suffit plus. Les programmes de développement doivent prouver leur impact réel sur la société. AID forme les gestionnaires aux méthodologies avancées d'évaluation socio-économique, à la gestion axée sur les résultats (GAR) et à la mise en place d'indicateurs d'impact pertinents.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Expertise 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-emerald-500/20">3</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Gestion des contrats et procédures de passation des marchés</h3>
+                        <p class="text-slate-600">
+                            La transparence et la rigueur dans la gestion contractuelle sont les garants de la bonne exécution des budgets. Nous proposons des modules pratiques pour maîtriser le droit des contrats, les procédures de passation de marchés et la gestion des litiges.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Expertise 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-teal-500/20">4</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Transition écologique, décarbonation et finance climat</h3>
+                        <p class="text-slate-600">
+                            Face aux défis climatiques, AID propose des parcours pointus pour former les futurs cadres responsables bilan carbone et stratégie de décarbonation, un enjeu clé pour l'avenir des infrastructures en Afrique.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-8 md:p-12 rounded-3xl shadow-xl my-10 relative overflow-hidden">
+            <div class="absolute right-0 bottom-0 opacity-10 translate-x-10 translate-y-10">
+                <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            </div>
+            <div class="relative z-10 max-w-3xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">Pourquoi choisir l'Académie AID pour vos équipes ?</h2>
+                <p class="text-slate-300 mb-6 leading-relaxed">
+                    <strong>L'expertise terrain avant tout :</strong> Les formations d'AID sont animées exclusivement par un réseau de consultants et d'experts internationaux chevronnés. Chaque module alterne études de cas réel, ateliers pratiques et partages d'outils directement applicables dès le retour en mission.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    Notre ingénierie pédagogique est pensée pour offrir une expérience fluide, de l'inscription via nos plateformes en ligne jusqu'à la remise des certifications. En choisissant AID, les organisations s'assurent d'un alignement parfait entre les compétences de leurs collaborateurs et les exigences de performance des partenaires au développement.
+                </p>
+            </div>
+        </section>
+
+        <section class="text-center py-8">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">Rejoignez nos prochaines sessions de formation</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto mb-8">
+                Vous dirigez une unité de gestion de projet ou vous souhaitez propulser votre carrière de manager de programme ? Découvrez notre calendrier de séminaires et planifiez dès maintenant le renforcement de vos compétences.
+            </p>
+
+            <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl border border-blue-100 shadow-xl max-w-2xl mx-auto">
+                <div class="space-y-3 mb-6 text-slate-700">
+                    <p class="font-semibold">Des questions sur nos programmes ?</p>
+                    <p class="font-semibold">Besoin d'une proposition sur-mesure pour votre institution ?</p>
+                </div>
+
+                <!-- Elementor-style Action Button leading to WPForms/Contact Modal or Action -->
+                <div class="pt-2">
+                    <button onclick="toggleModal('contactModal')" class="inline-flex items-center justify-center w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-blue-500/25 transition-all text-base tracking-wide">
+                        <span>Contacter l'équipe AID / Demander le catalogue de formation</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </article>
+</div>
+
+<!-- Contact Modal simulating WPForms Integration -->
+<div id="contactModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Académie AID</span>
+                <h3 class="text-xl font-bold text-slate-900">Demande de Catalogue & Contact</h3>
+            </div>
+            <button onclick="toggleModal('contactModal')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold transition">✕</button>
+        </div>
+
+        <form id="aid-contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nom complet</label>
+                <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="Ex: Dr. Aminata Diallo">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email Professionnel</label>
+                <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="aminata.diallo@institution.org">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Institution / Organisation</label>
+                <input type="text" name="organization" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="Ex: Unité de Gestion de Projet BAD">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Message ou Thématique souhaitée</label>
+                <textarea name="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="Je souhaite recevoir le catalogue des formations et planifier un séminaire en sauvegardes environnementales..."></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/20 transition text-sm">
+                Envoyer la demande (Simulé WPForms)
+            </button>
+            <div id="contact-success-msg" class="hidden text-center text-sm font-semibold text-emerald-600 mt-2">
+                ✓ Votre demande a bien été transmise à l'équipe AID. Nous vous répondrons sous 24h.
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleModal(id) {
+        document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function handleContactSubmit(e) {
+        e.preventDefault();
+        const successMsg = document.getElementById('contact-success-msg');
+        successMsg.classList.remove('hidden');
+        setTimeout(() => {
+            toggleModal('contactModal');
+            successMsg.classList.add('hidden');
+            e.target.reset();
+        }, 2500);
+    }
+</script>
+{% endblock %}

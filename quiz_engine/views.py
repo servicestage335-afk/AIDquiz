@@ -480,6 +480,10 @@ def user_profile_view(request):
     return render(request, 'user_profile.html')
 
 @login_required
+def aid_blog_view(request):
+    return render(request, 'aidblog.html')
+
+@login_required
 def admin_verify_and_reset_password(request):
     if request.method == 'POST':
         code = request.POST.get('verification_code')

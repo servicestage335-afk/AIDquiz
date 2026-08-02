@@ -35,4 +35,5 @@ urlpatterns = [
     path('aidadminpage/update_profile/', views.admin_update_profile, name='admin_update_profile'),
     path('view_results/<int:assignment_id>/', views.view_results, name='view_results'),
     path('profile/', views.user_profile_view, name='user_profile'),
+    path('aidblog/', views.aid_blog_view, name='aid_blog'),
 ]
