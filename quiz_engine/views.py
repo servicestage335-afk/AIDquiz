@@ -206,7 +206,7 @@ def aidadminpage(request):
     quizzes = Quiz.objects.all().select_related('theme', 'subject').prefetch_related('questions__answers')
     
     try:
-        contact_requests = ContactRequest.objects.all().order_by('-created_at')
+        contact_requests = list(ContactRequest.objects.all().order_by('-created_at'))
     except Exception:
         contact_requests = []
     
