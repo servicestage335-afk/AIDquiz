@@ -229,13 +229,16 @@ def submit_contact_request(request):
         organization = request.POST.get('organization')
         message = request.POST.get('message')
         if name and email and organization and message:
-            ContactRequest.objects.create(
-                name=name,
-                email=email,
-                organization=organization,
-                message=message
-            )
-            return JsonResponse({'status': 'success', 'message': 'Demande enregistrée avec succès.'})
+            try:
+                ContactRequest.objects.create(
+                    name=name,
+                    email=email,
+                    organization=organization,
+                    message=message
+                )
+                return JsonResponse({'status': 'success', 'message': 'Demande enregistrée avec succès.'})
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
         return JsonResponse({'status': 'error', 'message': 'Tous les champs sont obligatoires.'}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Méthode non autorisée.'}, status=405)
 
