@@ -117,19 +117,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for req in catalog_requests %}
-                            <tr class="border-b hover:bg-gray-50/50">
-                                <td class="p-3 text-sm text-gray-500 whitespace-nowrap">{{ req.created_at|date:"d/m/Y H:i" }}</td>
-                                <td class="p-3 font-medium text-gray-900">{{ req.name }}</td>
-                                <td class="p-3 text-blue-600"><a href="mailto:{{ req.email }}">{{ req.email }}</a></td>
-                                <td class="p-3 text-gray-700">{{ req.organization|default:"-" }}</td>
-                                <td class="p-3 text-gray-600 text-sm max-w-xs truncate" title="{{ req.message }}">{{ req.message }}</td>
-                            </tr>
-                        {% empty %}
+                        {% if catalog_requests %}
+                            {% for req in catalog_requests %}
+                                <tr class="border-b hover:bg-gray-50/50">
+                                    <td class="p-3 text-sm text-gray-500 whitespace-nowrap">{{ req.created_at|date:"d/m/Y H:i" }}</td>
+                                    <td class="p-3 font-medium text-gray-900">{{ req.name }}</td>
+                                    <td class="p-3 text-blue-600"><a href="mailto:{{ req.email }}">{{ req.email }}</a></td>
+                                    <td class="p-3 text-gray-700">{{ req.organization|default:"-" }}</td>
+                                    <td class="p-3 text-gray-600 text-sm max-w-xs truncate" title="{{ req.message }}">{{ req.message }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td colspan="5" class="p-6 text-center text-gray-400 italic">Aucune demande enregistrée pour le moment.</td>
+                                <td colspan="5" class="p-6 text-center text-gray-400 italic">Aucune demande enregistrée pour le moment (ou migration en cours).</td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
