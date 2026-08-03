@@ -231,23 +231,33 @@
     function handleContactSubmit(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const org = formData.get('organization');
-        const userMessage = formData.get('message');
-
-        const subject = encodeURIComponent("Demande de catalogue / contact - " + org);
-        const body = encodeURIComponent(`Nom: ${name}\nEmail: ${email}\nOrganisation: ${org}\n\nMessage:\n${userMessage}`);
         
         const successMsg = document.getElementById('contact-success-msg');
-        successMsg.classList.remove('hidden');
         
-        setTimeout(() => {
-            window.location.href = `mailto:contact@aid-academy.com?subject=${subject}&body=${body}`;
-            toggleModal('contactModal');
-            successMsg.classList.add('hidden');
-            e.target.reset();
-        }, 1500);
+        fetch('{% url "submit_catalog_request" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                successMsg.classList.remove('hidden');
+                setTimeout(() => {
+                    toggleModal('contactModal');
+                    successMsg.classList.add('hidden');
+                    e.target.reset();
+                }, 1500);
+            } else {
+                alert('Erreur lors de l\'envoi de la demande.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Une erreur est survenue.');
+        });
     }
 </script>
 {% endblock %}

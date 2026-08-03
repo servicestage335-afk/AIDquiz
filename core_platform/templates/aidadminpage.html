@@ -10,6 +10,7 @@
     <nav id="nav-menu" class="hidden lg:block space-y-2 lg:space-y-4">
             <button data-section="overview" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Overview</button>
             <button data-section="users" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Users</button>
+            <button data-section="demandes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Demandes</button>
             <button data-section="assignments" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Quiz Assignments</button>
             <button data-section="quizzes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Content</button>
             <button data-section="profile-settings" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Profile Settings</button>
@@ -93,6 +94,40 @@
                                         <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
                                     </form>
                                 </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="demandes" class="admin-section hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold">Demandes de Catalogue & Contact</h1>
+            </div>
+            <div class="glass p-4 sm:p-6 rounded-2xl border border-white/20 overflow-x-auto bg-white">
+                <table class="w-full min-w-[700px]">
+                    <thead>
+                        <tr class="border-b text-left text-gray-600">
+                            <th class="p-3">Date</th>
+                            <th class="p-3">Nom</th>
+                            <th class="p-3">Email</th>
+                            <th class="p-3">Organisation</th>
+                            <th class="p-3">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in catalog_requests %}
+                            <tr class="border-b hover:bg-gray-50/50">
+                                <td class="p-3 text-sm text-gray-500 whitespace-nowrap">{{ req.created_at|date:"d/m/Y H:i" }}</td>
+                                <td class="p-3 font-medium text-gray-900">{{ req.name }}</td>
+                                <td class="p-3 text-blue-600"><a href="mailto:{{ req.email }}">{{ req.email }}</a></td>
+                                <td class="p-3 text-gray-700">{{ req.organization|default:"-" }}</td>
+                                <td class="p-3 text-gray-600 text-sm max-w-xs truncate" title="{{ req.message }}">{{ req.message }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="p-6 text-center text-gray-400 italic">Aucune demande enregistrée pour le moment.</td>
                             </tr>
                         {% endfor %}
                     </tbody>

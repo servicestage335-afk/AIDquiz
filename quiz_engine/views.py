@@ -204,6 +204,7 @@ def aidadminpage(request):
     # Explicitly fetch all QuizTheme objects and all Quizzes to group them by matching theme_id == quiztheme.id
     quiz_themes = QuizTheme.objects.all().prefetch_related('quizzes__questions__answers')
     quizzes = Quiz.objects.all().select_related('theme', 'subject').prefetch_related('questions__answers')
+    catalog_requests = CatalogRequest.objects.all().order_by('-created_at')
     
     context = {
         'quiz_themes': quiz_themes,
@@ -211,6 +212,7 @@ def aidadminpage(request):
         'quizzes': quizzes,
         'subjects': Subject.objects.all(),
         'users': User.objects.filter(is_staff=False).select_related('profile'),
+        'catalog_requests': catalog_requests,
         'total_quizzes': quizzes.count(),
     }
     return render(request, 'aidadminpage.html', context)
@@ -482,6 +484,24 @@ def user_profile_view(request):
 @login_required
 def aid_blog_view(request):
     return render(request, 'aidblog.html')
+
+@login_required
+def submit_catalog_request(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        organization = request.POST.get('organization')
+        message = request.POST.get('message')
+        if name and email and message:
+            CatalogRequest.objects.create(
+                name=name,
+                email=email,
+                organization=organization,
+                message=message
+            )
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': 'Missing required fields.'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 @login_required
 def admin_verify_and_reset_password(request):

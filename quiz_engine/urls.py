@@ -36,4 +36,5 @@ urlpatterns = [
     path('view_results/<int:assignment_id>/', views.view_results, name='view_results'),
     path('profile/', views.user_profile_view, name='user_profile'),
     path('aidblog/', views.aid_blog_view, name='aid_blog'),
+    path('submit_catalog_request/', views.submit_catalog_request, name='submit_catalog_request'),
 ]

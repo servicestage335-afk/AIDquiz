@@ -63,3 +63,14 @@ class Assignment(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.quiz.title} ({self.status})'
+
+class CatalogRequest(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    organization = models.CharField(max_length=200, blank=True, null=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email}) - {self.organization or 'No Org'}"
+
