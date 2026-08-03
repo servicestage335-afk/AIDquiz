@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.db import DatabaseError, OperationalError, connection, transaction
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import Subject, Quiz, Question, Answer, Assignment, UserProfile, QuizTheme, CatalogRequest
+from .models import Subject, Quiz, Question, Answer, Assignment, UserProfile, QuizTheme
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, HASH_SESSION_KEY
@@ -204,10 +204,7 @@ def aidadminpage(request):
     # Explicitly fetch all QuizTheme objects and all Quizzes to group them by matching theme_id == quiztheme.id
     quiz_themes = QuizTheme.objects.all().prefetch_related('quizzes__questions__answers')
     quizzes = Quiz.objects.all().select_related('theme', 'subject').prefetch_related('questions__answers')
-    try:
-        catalog_requests = CatalogRequest.objects.all().order_by('-created_at')
-    except (OperationalError, ProgrammingError, Exception):
-        catalog_requests = []
+    contact_requests = ContactRequest.objects.all().order_by('-created_at')
     
     context = {
         'quiz_themes': quiz_themes,
@@ -215,10 +212,29 @@ def aidadminpage(request):
         'quizzes': quizzes,
         'subjects': Subject.objects.all(),
         'users': User.objects.filter(is_staff=False).select_related('profile'),
-        'catalog_requests': catalog_requests,
+        'contact_requests': contact_requests,
         'total_quizzes': quizzes.count(),
     }
     return render(request, 'aidadminpage.html', context)
+
+@login_required
+def submit_contact_request(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        organization = request.POST.get('organization')
+        message = request.POST.get('message')
+        if name and email and organization and message:
+            ContactRequest.objects.create(
+                name=name,
+                email=email,
+                organization=organization,
+                message=message
+            )
+            return JsonResponse({'status': 'success', 'message': 'Demande enregistrée avec succès.'})
+        return JsonResponse({'status': 'error', 'message': 'Tous les champs sont obligatoires.'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Méthode non autorisée.'}, status=405)
+
 
 # ================= AJAX CRUD =================
 
@@ -487,24 +503,6 @@ def user_profile_view(request):
 @login_required
 def aid_blog_view(request):
     return render(request, 'aidblog.html')
-
-@login_required
-def submit_catalog_request(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        organization = request.POST.get('organization')
-        message = request.POST.get('message')
-        if name and email and message:
-            CatalogRequest.objects.create(
-                name=name,
-                email=email,
-                organization=organization,
-                message=message
-            )
-            return JsonResponse({'status': 'success'})
-        return JsonResponse({'status': 'error', 'message': 'Missing required fields.'}, status=400)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 @login_required
 def admin_verify_and_reset_password(request):

@@ -230,11 +230,11 @@
 
     function handleContactSubmit(e) {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        
+        const form = e.target;
+        const formData = new FormData(form);
         const successMsg = document.getElementById('contact-success-msg');
-        
-        fetch('{% url "submit_catalog_request" %}', {
+
+        fetch("{% url 'submit_contact_request' %}", {
             method: 'POST',
             body: formData,
             headers: {
@@ -248,15 +248,15 @@
                 setTimeout(() => {
                     toggleModal('contactModal');
                     successMsg.classList.add('hidden');
-                    e.target.reset();
+                    form.reset();
                 }, 1500);
             } else {
-                alert('Erreur lors de l\'envoi de la demande.');
+                alert(data.message || 'Une erreur est survenue.');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Une erreur est survenue.');
+            alert('Une erreur réseau est survenue.');
         });
     }
 </script>

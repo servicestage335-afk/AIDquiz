@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, Quiz, Question, Answer, Assignment
+from .models import Subject, Quiz, Question, Answer, Assignment, ContactRequest
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
@@ -26,8 +26,15 @@ class AssignmentAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'quiz__title', 'quiz__subject__name')
     readonly_fields = ('assigned_at', 'completed_at')
 
+class ContactRequestAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'organization', 'created_at')
+    search_fields = ('name', 'email', 'organization', 'message')
+    readonly_fields = ('created_at',)
+
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Assignment, AssignmentAdmin)
+admin.site.register(ContactRequest, ContactRequestAdmin)
+
