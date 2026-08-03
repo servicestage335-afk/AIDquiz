@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.db import DatabaseError, OperationalError, connection, transaction
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import Subject, Quiz, Question, Answer, Assignment, UserProfile, QuizTheme
+from .models import Subject, Quiz, Question, Answer, Assignment, UserProfile, QuizTheme, CatalogRequest
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, HASH_SESSION_KEY
