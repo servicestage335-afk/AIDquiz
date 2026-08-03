@@ -206,7 +206,7 @@ def aidadminpage(request):
     quizzes = Quiz.objects.all().select_related('theme', 'subject').prefetch_related('questions__answers')
     try:
         catalog_requests = CatalogRequest.objects.all().order_by('-created_at')
-    except Exception:
+    except (OperationalError, ProgrammingError, Exception):
         catalog_requests = []
     
     context = {
