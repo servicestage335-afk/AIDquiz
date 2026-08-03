@@ -204,7 +204,10 @@ def aidadminpage(request):
     # Explicitly fetch all QuizTheme objects and all Quizzes to group them by matching theme_id == quiztheme.id
     quiz_themes = QuizTheme.objects.all().prefetch_related('quizzes__questions__answers')
     quizzes = Quiz.objects.all().select_related('theme', 'subject').prefetch_related('questions__answers')
-    catalog_requests = CatalogRequest.objects.all().order_by('-created_at')
+    try:
+        catalog_requests = CatalogRequest.objects.all().order_by('-created_at')
+    except Exception:
+        catalog_requests = []
     
     context = {
         'quiz_themes': quiz_themes,
