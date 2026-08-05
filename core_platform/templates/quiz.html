@@ -8,8 +8,8 @@
 
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
             <p class="text-sm text-blue-700">
-                <strong>Instructions:</strong> Select the correct answer for each question below. 
-                Passing score: {{ assignment.quiz.passing_score }} points.
+                <strong>Instructions :</strong> Sélectionnez la bonne réponse pour chaque question ci-dessous. 
+                Score de réussite requis : {{ assignment.quiz.passing_score }} points.
             </p>
         </div>
 
@@ -28,7 +28,7 @@
                                     <label for="q{{ question.id }}_{{ forloop.counter }}" class="cursor-pointer">{{ answer.answer_text }}</label>
                                 </div>
                             {% empty %}
-                                <p class="text-gray-500">No answers available for this question.</p>
+                                <p class="text-gray-500">Aucune réponse disponible pour cette question.</p>
                             {% endfor %}
                         </div>
                     </div>
@@ -37,10 +37,10 @@
 
             <div class="mt-8 flex justify-between items-center">
                 <a href="{% url 'dashboard' %}" class="text-gray-600 hover:text-gray-800">
-                    Cancel and Return to Dashboard
+                    Annuler et retourner au tableau de bord
                 </a>
                 <button type="submit" class="bg-green-500 text-white px-8 py-3 rounded-lg hover:bg-green-600 transition-colors font-medium">
-                    Submit Quiz
+                    Soumettre le quiz
                 </button>
             </div>
         </form>

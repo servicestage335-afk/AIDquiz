@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">{{ quiz.title }} - Results</h1>
-    <p class="text-gray-600 mb-8">Subject: {{ quiz.subject.name }} | Your Score: {{ assignment.score }}/100</p>
+    <h1 class="text-3xl font-bold mb-4">{{ quiz.title }} - Résultats</h1>
+    <p class="text-gray-600 mb-8">Matière : {{ quiz.subject.name }} | Votre Score : {{ assignment.score }}/100</p>
 
     <div class="space-y-6">
         {% for question in questions %}
@@ -13,7 +13,7 @@
                 {% for answer in question.answers.all %}
                 <div class="p-2 rounded {% if answer.is_correct %}bg-green-100{% else %}bg-gray-50{% endif %}">
                     {{ answer.answer_text }}
-                    {% if answer.is_correct %} <span class="text-green-600 font-bold">(Correct)</span> {% endif %}
+                    {% if answer.is_correct %} <span class="text-green-600 font-bold">(Correcte)</span> {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -22,7 +22,7 @@
     </div>
     
     <div class="mt-8">
-        <a href="{% url 'dashboard' %}" class="text-blue-500 hover:underline">Back to Dashboard</a>
+        <a href="{% url 'dashboard' %}" class="text-blue-500 hover:underline">Retour au tableau de bord</a>
     </div>
 </div>
 {% endblock %}

@@ -1,34 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="max-w-4xl mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-8">Profile Settings</h1>
+    <h1 class="text-3xl font-bold mb-8">Paramètres du Profil</h1>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Edit Account Details -->
         <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-            <h2 class="text-xl font-bold mb-4 text-gray-800">Edit Account Details</h2>
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Modifier les informations du compte</h2>
             <form id="user-profile-form" class="space-y-4">
                 {% csrf_token %}
                 <div>
-                    <label class="block text-sm font-bold mb-1">Username</label>
+                    <label class="block text-sm font-bold mb-1">Nom d'utilisateur</label>
                     <input type="text" name="username" id="profile-username" value="{{ request.user.username }}" class="w-full p-2 border rounded-xl" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-bold mb-1">Email Address</label>
+                    <label class="block text-sm font-bold mb-1">Adresse Email</label>
                     <input type="email" name="email" id="profile-email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl" required>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Save Account Details</button>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Enregistrer les modifications</button>
                 <div id="profile-update-status" class="text-sm font-medium mt-2"></div>
             </form>
         </div>
 
         <!-- Password Modification via Email Verification -->
         <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-            <h2 class="text-xl font-bold mb-4 text-gray-800">Change Password</h2>
-            <p class="text-sm text-gray-600 mb-4">Step 1: Send verification code to your email.</p>
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Modifier le mot de passe</h2>
+            <p class="text-sm text-gray-600 mb-4">Étape 1 : Envoyer le code de vérification à votre email.</p>
             
             <div id="profile-step-1" class="space-y-4">
-                <button type="button" id="send-code-btn" class="w-full bg-indigo-600 text-white p-2.5 rounded-xl font-medium hover:bg-indigo-700 transition">Send Verification Code</button>
+                <button type="button" id="send-code-btn" class="w-full bg-indigo-600 text-white p-2.5 rounded-xl font-medium hover:bg-indigo-700 transition">Envoyer le code de vérification</button>
                 <div id="send-code-status" class="text-sm font-medium mt-2"></div>
             </div>
 
@@ -36,10 +36,10 @@
             <form id="verify-code-form" class="space-y-4 mt-4 border-t pt-4">
                 {% csrf_token %}
                 <div>
-                    <label class="block text-sm font-bold mb-1">Verification Code</label>
+                    <label class="block text-sm font-bold mb-1">Code de vérification</label>
                     <div class="flex gap-2">
-                        <input type="text" name="verification_code" id="verification-code-input" placeholder="6-digit code" maxlength="6" class="flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Verify Code</button>
+                        <input type="text" name="verification_code" id="verification-code-input" placeholder="Code à 6 chiffres" maxlength="6" class="flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Vérifier</button>
                     </div>
                     <small id="debug-code-hint" class="text-indigo-600 text-xs block mt-1"></small>
                 </div>
@@ -50,10 +50,10 @@
             <form id="verify-reset-form" class="space-y-4 mt-4 border-t pt-4">
                 {% csrf_token %}
                 <div>
-                    <label class="block text-sm font-bold mb-1">New Password</label>
-                    <input type="password" name="new_password" id="new-password-input" placeholder="Enter new password" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled required>
+                    <label class="block text-sm font-bold mb-1">Nouveau mot de passe</label>
+                    <input type="password" name="new_password" id="new-password-input" placeholder="Entrez le nouveau mot de passe" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled required>
                 </div>
-                <button type="submit" id="reset-password-btn" class="w-full bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-medium transition opacity-50 cursor-not-allowed" disabled>Update Password</button>
+                <button type="submit" id="reset-password-btn" class="w-full bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-medium transition opacity-50 cursor-not-allowed" disabled>Mettre à jour le mot de passe</button>
                 <div id="verify-reset-status" class="text-sm font-medium mt-2"></div>
             </form>
         </div>
@@ -77,20 +77,20 @@
         userProfileForm.onsubmit = async (e) => {
             e.preventDefault();
             const statusDiv = document.getElementById('profile-update-status');
-            statusDiv.textContent = "Updating profile details...";
+            statusDiv.textContent = "Mise à jour du profil...";
             statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
             try {
                 const resp = await postAjax('{% url "admin_update_profile" %}', new FormData(e.target));
                 const data = await resp.json();
                 if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Profile details updated successfully!";
+                    statusDiv.textContent = "Profil mis à jour avec succès !";
                     statusDiv.className = "text-sm font-medium mt-2 text-green-600";
                 } else {
-                    statusDiv.textContent = data.message || "Failed to update profile details.";
+                    statusDiv.textContent = data.message || "Échec de la mise à jour du profil.";
                     statusDiv.className = "text-sm font-medium mt-2 text-red-600";
                 }
             } catch (err) {
-                statusDiv.textContent = "An error occurred.";
+                statusDiv.textContent = "Une erreur est survenue.";
                 statusDiv.className = "text-sm font-medium mt-2 text-red-600";
             }
         };
@@ -100,7 +100,7 @@
     if (sendCodeBtn) {
         sendCodeBtn.onclick = async () => {
             const statusDiv = document.getElementById('send-code-status');
-            statusDiv.textContent = "Sending verification code...";
+            statusDiv.textContent = "Envoi du code de vérification...";
             statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
             try {
                 const formData = new FormData();
@@ -109,17 +109,17 @@
                 const resp = await postAjax('{% url "admin_send_verification_code" %}', formData);
                 const data = await resp.json();
                 if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Verification code sent to your email!";
+                    statusDiv.textContent = "Code de vérification envoyé à votre email !";
                     statusDiv.className = "text-sm font-medium mt-2 text-green-600";
                     if (data.debug_code) {
-                        document.getElementById('debug-code-hint').textContent = `[Debug Code: ${data.debug_code}]`;
+                        document.getElementById('debug-code-hint').textContent = `[Code de débogage : ${data.debug_code}]`;
                     }
                 } else {
-                    statusDiv.textContent = data.message || "Failed to send code.";
+                    statusDiv.textContent = data.message || "Échec de l'envoi du code.";
                     statusDiv.className = "text-sm font-medium mt-2 text-red-600";
                 }
             } catch (err) {
-                statusDiv.textContent = "An error occurred.";
+                statusDiv.textContent = "Une erreur est survenue.";
                 statusDiv.className = "text-sm font-medium mt-2 text-red-600";
             }
         };
@@ -130,13 +130,13 @@
         verifyCodeForm.onsubmit = async (e) => {
             e.preventDefault();
             const statusDiv = document.getElementById('verify-code-status');
-            statusDiv.textContent = "Verifying code...";
+            statusDiv.textContent = "Vérification du code...";
             statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
             try {
                 const resp = await postAjax('{% url "admin_verify_code_only" %}', new FormData(e.target));
                 const data = await resp.json();
                 if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Code verified! You can now enter a new password.";
+                    statusDiv.textContent = "Code vérifié ! Vous pouvez maintenant saisir un nouveau mot de passe.";
                     statusDiv.className = "text-sm font-medium mt-2 text-green-600";
                     
                     const newPassInput = document.getElementById('new-password-input');
@@ -146,11 +146,11 @@
                     resetBtn.disabled = false;
                     resetBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 } else {
-                    statusDiv.textContent = data.message || "Invalid code.";
+                    statusDiv.textContent = data.message || "Code invalide.";
                     statusDiv.className = "text-sm font-medium mt-2 text-red-600";
                 }
             } catch (err) {
-                statusDiv.textContent = "An error occurred.";
+                statusDiv.textContent = "Une erreur est survenue.";
                 statusDiv.className = "text-sm font-medium mt-2 text-red-600";
             }
         };
@@ -161,7 +161,7 @@
         verifyResetForm.onsubmit = async (e) => {
             e.preventDefault();
             const statusDiv = document.getElementById('verify-reset-status');
-            statusDiv.textContent = "Updating password...";
+            statusDiv.textContent = "Mise à jour du mot de passe...";
             statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
             try {
                 const formData = new FormData(e.target);
@@ -170,7 +170,7 @@
                 const resp = await postAjax('{% url "admin_verify_and_reset_password" %}', formData);
                 const data = await resp.json();
                 if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Password updated successfully!";
+                    statusDiv.textContent = "Mot de passe mis à jour avec succès !";
                     statusDiv.className = "text-sm font-medium mt-2 text-green-600";
                     e.target.reset();
                     document.getElementById('verify-code-form').reset();
@@ -179,11 +179,11 @@
                     document.getElementById('reset-password-btn').disabled = true;
                     document.getElementById('reset-password-btn').classList.add('opacity-50', 'cursor-not-allowed');
                 } else {
-                    statusDiv.textContent = data.message || "Failed to update password.";
+                    statusDiv.textContent = data.message || "Échec de la mise à jour du mot de passe.";
                     statusDiv.className = "text-sm font-medium mt-2 text-red-600";
                 }
             } catch (err) {
-                statusDiv.textContent = "An error occurred.";
+                statusDiv.textContent = "Une erreur est survenue.";
                 statusDiv.className = "text-sm font-medium mt-2 text-red-600";
             }
         };
