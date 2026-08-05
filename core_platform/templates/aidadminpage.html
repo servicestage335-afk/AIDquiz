@@ -4,16 +4,16 @@
 <div class="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100" id="admin-root">
 <aside class="w-full lg:w-64 bg-white/60 backdrop-blur-md border-r border-white/40 p-4 lg:p-6 shrink-0">
     <div class="flex justify-between items-center mb-6 lg:mb-8">
-        <h2 class="text-xl font-bold text-gray-800">AID Quiz Administrator</h2>
+        <h2 class="text-xl font-bold text-gray-800">Administration AID</h2>
         <button class="lg:hidden p-2 bg-white/80 rounded-xl shadow-sm text-lg font-bold" onclick="document.getElementById('nav-menu').classList.toggle('hidden')">☰ Menu</button>
     </div>
     <nav id="nav-menu" class="hidden lg:block space-y-2 lg:space-y-4">
-            <button data-section="overview" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Overview</button>
-            <button data-section="users" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Users</button>
+            <button data-section="overview" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Aperçu</button>
+            <button data-section="users" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Utilisateurs</button>
             <button data-section="demandes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Demandes</button>
-            <button data-section="assignments" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Quiz Assignments</button>
-            <button data-section="quizzes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Content</button>
-            <button data-section="profile-settings" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Profile Settings</button>
+            <button data-section="assignments" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Affectations de Quiz</button>
+            <button data-section="quizzes" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Contenu</button>
+            <button data-section="profile-settings" class="admin-nav w-full text-left p-3 rounded-xl hover:bg-white/50 font-medium transition">Paramètres du Profil</button>
         </nav>
     </aside>
 
@@ -21,18 +21,18 @@
         <div id="toast-container" class="fixed top-4 right-4 z-[99999] space-y-2"></div>
 
         <section id="overview" class="admin-section hidden">
-            <h1 class="text-3xl font-bold mb-8 text-gray-900">Overview</h1>
+            <h1 class="text-3xl font-bold mb-8 text-gray-900">Aperçu</h1>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                    <h3 class="text-gray-500 font-medium">Total Users</h3>
+                    <h3 class="text-gray-500 font-medium">Total des Utilisateurs</h3>
                     <p class="text-4xl font-bold mt-2">{{ users.count }}</p>
                 </div>
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                    <h3 class="text-gray-500 font-medium">Total Quizzes</h3>
+                    <h3 class="text-gray-500 font-medium">Total des Quiz</h3>
                     <p class="text-4xl font-bold mt-2">{{ total_quizzes }}</p>
                 </div>
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                    <h3 class="text-gray-500 font-medium">Subjects</h3>
+                    <h3 class="text-gray-500 font-medium">Matières</h3>
                     <p class="text-4xl font-bold mt-2">{{ subjects.count }}</p>
                 </div>
             </div>
@@ -40,36 +40,36 @@
 
         <section id="users" class="admin-section hidden">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold">User Management</h1>
-                <button class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700" onclick="toggleModal('addUserModal')">Add User</button>
+                <h1 class="text-3xl font-bold">Gestion des Utilisateurs</h1>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700" onclick="toggleModal('addUserModal')">Ajouter un utilisateur</button>
             </div>
             <div id="addUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
                 <div class="bg-white p-6 rounded-2xl w-96">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold">Add User</h2>
+                        <h2 class="text-xl font-bold">Ajouter un utilisateur</h2>
                         <button class="text-gray-400 font-bold" onclick="toggleModal('addUserModal')">✕</button>
                     </div>
                     <form id="add-user-form" action="{% url 'add_user' %}" method="POST" onsubmit="handleAjaxForm(event, () => toggleModal('addUserModal'))">
                         {% csrf_token %}
-                        <input type="text" name="username" class="w-full p-2 border rounded mb-2" placeholder="Username" required>
+                        <input type="text" name="username" class="w-full p-2 border rounded mb-2" placeholder="Nom d'utilisateur" required>
                         <input type="email" name="email" class="w-full p-2 border rounded mb-2" placeholder="Email" required>
-                        <input type="password" name="password" class="w-full p-2 border rounded mb-2" placeholder="Password" required>
-                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Create User</button>
+                        <input type="password" name="password" class="w-full p-2 border rounded mb-2" placeholder="Mot de passe" required>
+                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Créer l'utilisateur</button>
                     </form>
                 </div>
             </div>
             <div id="editUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
                 <div class="bg-white p-6 rounded-2xl w-96">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold">Edit User</h2>
+                        <h2 class="text-xl font-bold">Modifier l'utilisateur</h2>
                         <button class="text-gray-400 font-bold" onclick="toggleModal('editUserModal')">✕</button>
                     </div>
                     <form id="edit-user-form">
                         {% csrf_token %}
                         <input type="hidden" name="user_id" id="edit-user-id">
-                        <input type="text" name="username" id="edit-username" class="w-full p-2 border rounded mb-2" placeholder="Username">
+                        <input type="text" name="username" id="edit-username" class="w-full p-2 border rounded mb-2" placeholder="Nom d'utilisateur">
                         <input type="email" name="email" id="edit-email" class="w-full p-2 border rounded mb-2" placeholder="Email">
-                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Save Changes</button>
+                        <button type="submit" class="w-full bg-indigo-600 text-white p-2 rounded-xl">Enregistrer</button>
                     </form>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 <table class="w-full min-w-[500px]">
                     <thead>
                         <tr class="border-b text-left text-gray-600">
-                            <th class="p-2">Username</th>
+                            <th class="p-2">Nom d'utilisateur</th>
                             <th class="p-2">Email</th>
                             <th class="p-2 text-right">Actions</th>
                         </tr>
@@ -88,10 +88,10 @@
                                 <td class="p-2 font-medium">{{ u.username }}</td>
                                 <td class="p-2 text-gray-600">{{ u.email }}</td>
                                 <td class="p-2 text-right flex gap-2 justify-end items-center">
-                                    <button class="bg-indigo-500 text-white px-2 py-1 rounded text-xs" onclick="openEditUserModal('{{ u.id }}', '{{ u.username }}', '{{ u.email }}')">Edit</button>
+                                    <button class="bg-indigo-500 text-white px-2 py-1 rounded text-xs" onclick="openEditUserModal('{{ u.id }}', '{{ u.username }}', '{{ u.email }}')">Modifier</button>
                                     <form method="POST" action="{% url 'delete_user' u.id %}" onsubmit="handleAjaxDelete(event, '#user-{{ u.id }}')" class="inline">
                                         {% csrf_token %}
-                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Delete</button>
+                                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Supprimer</button>
                                     </form>
                                 </td>
                             </tr>
@@ -138,12 +138,12 @@
         </section>
 
         <section id="assignments" class="admin-section hidden">
-            <h1 class="text-3xl font-bold mb-8">Quiz Assignments</h1>
+            <h1 class="text-3xl font-bold mb-8">Affectations de Quiz</h1>
             <div class="glass p-4 sm:p-6 rounded-2xl border border-white/20 bg-white">
                 <form id="assignment-form" class="flex flex-col gap-4 items-stretch sm:flex-row sm:items-end">
                     {% csrf_token %}
                     <div class="flex-1">
-                        <label class="block text-sm font-bold mb-1">User</label>
+                        <label class="block text-sm font-bold mb-1">Utilisateur</label>
                         <select name="user_id" class="p-2 border rounded-xl w-full">
                             {% for u in users %}
                                 <option value="{{ u.id }}">{{ u.username }}</option>
@@ -158,15 +158,15 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition">Assign</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-medium transition">Affecter</button>
                 </form>
             </div>
         </section>
 
         <section id="quizzes" class="admin-section hidden">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold">Content Management</h1>
-                <button onclick="toggleModal('addThemeModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl transition">+ Add Theme</button>
+                <h1 class="text-3xl font-bold">Gestion du Contenu</h1>
+                <button onclick="toggleModal('addThemeModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl transition">+ Ajouter un thème</button>
             </div>
             <div id="themes-container" class="space-y-6">
                 {% for theme in quiz_themes %}
@@ -180,12 +180,12 @@
                                 </span>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-                                <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition add-quiz-to-theme-btn" data-theme-id="{{ theme.id }}" onclick="event.stopPropagation(); openAddQuizToThemeModal('{{ theme.id }}')">+ Add Quiz</button>
+                                <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition add-quiz-to-theme-btn" data-theme-id="{{ theme.id }}" onclick="event.stopPropagation(); openAddQuizToThemeModal('{{ theme.id }}')">+ Ajouter un quiz</button>
                                 <form method="POST" action="{% url 'delete_theme' theme.id %}" onsubmit="handleAjaxDelete(event, '#theme-{{ theme.id }}')" class="inline" onclick="event.stopPropagation()">
                                     {% csrf_token %}
-                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Delete Theme</button>
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Supprimer le thème</button>
                                 </form>
-                                <span class="text-xs text-gray-500 font-medium hidden sm:inline">Click to collapse/expand</span>
+                                <span class="text-xs text-gray-500 font-medium hidden sm:inline">Cliquer pour réduire/développer</span>
                                 <svg id="theme-icon-{{ theme.id }}" class="w-5 h-5 text-indigo-700 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -203,17 +203,17 @@
                                                 <p class="text-sm text-gray-500 mt-0.5">{{ quiz.questions.count }} Question{{ quiz.questions.count|pluralize }}</p>
                                             </div>
                                             <div class="flex flex-wrap gap-2 items-center w-full sm:w-auto justify-end">
-                                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition" onclick="toggleModal('questionsModal-{{ quiz.id }}')">Manage Questions</button>
+                                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition" onclick="toggleModal('questionsModal-{{ quiz.id }}')">Gérer les questions</button>
                                                 <form method="POST" action="{% url 'delete_quiz' quiz.id %}" onsubmit="handleAjaxDelete(event, '#quiz-{{ quiz.id }}')" class="inline">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Delete Quiz</button>
+                                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">Supprimer le quiz</button>
                                                 </form>
                                             </div>
                                         </div>
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <p class="text-sm text-gray-400 italic py-2">No quizzes associated with this theme yet.</p>
+                                <p class="text-sm text-gray-400 italic py-2">Aucun quiz associé à ce thème pour le moment.</p>
                             {% endif %}
                         </div>
                     </div>
@@ -222,34 +222,34 @@
         </section>
 
         <section id="profile-settings" class="admin-section hidden">
-            <h1 class="text-3xl font-bold mb-8">Profile Settings</h1>
+            <h1 class="text-3xl font-bold mb-8">Paramètres du Profil</h1>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
                 <!-- Edit Admin Account Details -->
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                    <h2 class="text-xl font-bold mb-4 text-gray-800">Edit Account Details</h2>
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Modifier les informations du compte</h2>
                     <form id="admin-profile-form" class="space-y-4">
                         {% csrf_token %}
                         <div>
-                            <label class="block text-sm font-bold mb-1">Username</label>
+                            <label class="block text-sm font-bold mb-1">Nom d'utilisateur</label>
                             <input type="text" name="username" id="profile-username" value="{{ request.user.username }}" class="w-full p-2 border rounded-xl" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold mb-1">Email Address</label>
+                            <label class="block text-sm font-bold mb-1">Adresse Email</label>
                             <input type="email" name="email" id="profile-email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl" required>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Save Account Details</button>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Enregistrer les modifications</button>
                         <div id="profile-update-status" class="text-sm font-medium mt-2"></div>
                     </form>
                 </div>
 
                 <!-- Password Modification via Email Verification -->
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
-                    <h2 class="text-xl font-bold mb-4 text-gray-800">Change Password</h2>
-                    <p class="text-sm text-gray-600 mb-4">Step 1: Send verification code to your email.</p>
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Modifier le mot de passe</h2>
+                    <p class="text-sm text-gray-600 mb-4">Étape 1 : Envoyer le code de vérification à votre email.</p>
                     
                     <div id="profile-step-1" class="space-y-4">
-                        <button type="button" id="send-code-btn" class="w-full bg-indigo-600 text-white p-2.5 rounded-xl font-medium hover:bg-indigo-700 transition">Send Verification Code</button>
+                        <button type="button" id="send-code-btn" class="w-full bg-indigo-600 text-white p-2.5 rounded-xl font-medium hover:bg-indigo-700 transition">Envoyer le code de vérification</button>
                         <div id="send-code-status" class="text-sm font-medium mt-2"></div>
                     </div>
 
@@ -257,10 +257,10 @@
                     <form id="verify-code-form" class="space-y-4 mt-4 border-t pt-4">
                         {% csrf_token %}
                         <div>
-                            <label class="block text-sm font-bold mb-1">Verification Code</label>
+                            <label class="block text-sm font-bold mb-1">Code de vérification</label>
                             <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="text" name="verification_code" id="verification-code-input" placeholder="6-digit code" maxlength="6" class="w-full sm:flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
-                                <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Verify Code</button>
+                                <input type="text" name="verification_code" id="verification-code-input" placeholder="Code à 6 chiffres" maxlength="6" class="w-full sm:flex-1 p-2 border rounded-xl uppercase tracking-widest text-center font-bold" required>
+                                <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition">Vérifier</button>
                             </div>
                             <small id="debug-code-hint" class="text-indigo-600 text-xs block mt-1"></small>
                         </div>
@@ -271,10 +271,10 @@
                     <form id="verify-reset-form" class="space-y-4 mt-4 border-t pt-4">
                         {% csrf_token %}
                         <div>
-                            <label class="block text-sm font-bold mb-1">New Password</label>
-                            <input type="password" name="new_password" id="new-password-input" placeholder="Enter new password" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled required>
+                            <label class="block text-sm font-bold mb-1">Nouveau mot de passe</label>
+                            <input type="password" name="new_password" id="new-password-input" placeholder="Entrez le nouveau mot de passe" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled required>
                         </div>
-                        <button type="submit" id="reset-password-btn" class="w-full bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-medium transition opacity-50 cursor-not-allowed" disabled>Update Password</button>
+                        <button type="submit" id="reset-password-btn" class="w-full bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-medium transition opacity-50 cursor-not-allowed" disabled>Mettre à jour le mot de passe</button>
                         <div id="verify-reset-status" class="text-sm font-medium mt-2"></div>
                     </form>
                 </div>
@@ -289,13 +289,13 @@
     <div id="questionsModal-{{ quiz.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-2xl w-[600px] max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">Manage Questions: {{ quiz.title }}</h2>
+                <h2 class="text-xl font-bold">Gérer les questions : {{ quiz.title }}</h2>
                 <button onclick="toggleModal('questionsModal-{{ quiz.id }}')" class="font-bold">×</button>
             </div>
             <form class="mb-4 add-question-form" data-quiz-id="{{ quiz.id }}">
                 {% csrf_token %}
-                <input type="text" name="question_text" placeholder="Question Text" class="w-full p-2 border rounded" required>
-                <button type="submit" class="bg-blue-600 text-white mt-2 px-4 py-1 rounded">Add Question</button>
+                <input type="text" name="question_text" placeholder="Texte de la question" class="w-full p-2 border rounded" required>
+                <button type="submit" class="bg-blue-600 text-white mt-2 px-4 py-1 rounded">Ajouter une question</button>
             </form>
             <div class="space-y-2">
                 {% for q in quiz.questions.all %}
@@ -303,21 +303,21 @@
                         <div class="flex justify-between items-center cursor-pointer">
                             <span class="font-bold flex-grow" onclick="this.parentElement.nextElementSibling.classList.toggle('hidden')">{{ q.question_text }}</span>
                             <div class="flex gap-2 items-center">
-                                <button type="button" class="px-2 py-1 text-[10px] font-bold text-white bg-blue-500 rounded hover:bg-blue-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Edit</button>
+                                <button type="button" class="px-2 py-1 text-[10px] font-bold text-white bg-blue-500 rounded hover:bg-blue-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Modifier</button>
                                 <div class="hidden p-4 bg-white shadow-xl border rounded-2xl absolute z-50 w-96 left-1/2 -translate-x-1/2 top-10">
                                     <div class="flex justify-between items-center mb-2">
-                                        <h3 class="font-bold text-sm">Edit Question</h3>
+                                        <h3 class="font-bold text-sm">Modifier la question</h3>
                                         <button type="button" class="text-xs font-bold text-gray-400" onclick="this.parentElement.parentElement.classList.add('hidden')">✕</button>
                                     </div>
                                     <form method="POST" action="{% url 'edit_question' q.id %}" onsubmit="handleAjaxForm(event, () => this.parentElement.classList.add('hidden'))">
                                         {% csrf_token %}
                                         <input type="text" name="question_text" value="{{ q.question_text }}" class="w-full p-2 border rounded text-sm mb-2" required>
-                                        <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                        <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Enregistrer</button>
                                     </form>
                                 </div>
                                 <form method="POST" action="{% url 'delete_question' q.id %}" onsubmit="handleAjaxDelete(event, '#question-{{ q.id }}')" class="inline">
                                     {% csrf_token %}
-                                    <button type="submit" class="px-2 py-1 text-[10px] font-bold text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                                    <button type="submit" class="px-2 py-1 text-[10px] font-bold text-white bg-red-500 rounded hover:bg-red-600">Supprimer</button>
                                 </form>
                             </div>
                         </div>
@@ -328,47 +328,47 @@
                                         {{ a.answer_text }}
                                     </span>
                                     <div class="flex gap-1 items-center">
-                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-indigo-500 rounded hover:bg-indigo-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Edit</button>
+                                        <button type="button" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-indigo-500 rounded hover:bg-indigo-600" onclick="this.nextElementSibling.classList.toggle('hidden')">Modifier</button>
                                         <div class="hidden p-4 bg-white shadow-xl border rounded-2xl absolute z-50 w-96 left-1/2 -translate-x-1/2 top-10">
                                             <div class="flex justify-between items-center mb-2">
-                                                <h3 class="font-bold text-sm">Edit Answer</h3>
+                                                <h3 class="font-bold text-sm">Modifier la réponse</h3>
                                                 <button type="button" class="text-xs font-bold text-gray-400" onclick="this.parentElement.parentElement.classList.add('hidden')">✕</button>
                                             </div>
                                             <form method="POST" action="{% url 'edit_answer' a.id %}" onsubmit="handleAjaxForm(event, () => this.parentElement.classList.add('hidden'))">
                                                 {% csrf_token %}
                                                 <input type="text" name="answer_text" value="{{ a.answer_text }}" class="w-full p-2 border rounded text-sm mb-2" required>
-                                                <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Save Changes</button>
+                                                <button type="submit" class="w-full bg-green-500 text-white text-xs font-bold py-2 rounded-xl">Enregistrer</button>
                                             </form>
                                         </div>
                                         <form method="POST" action="{% url 'delete_answer' a.id %}" onsubmit="handleAjaxDelete(event, '#answer-{{ a.id }}')" class="inline">
                                             {% csrf_token %}
-                                            <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                                            <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white bg-red-500 rounded hover:bg-red-600">Supprimer</button>
                                         </form>
                                         <form method="POST" action="{% url 'toggle_correct_answer' a.id %}" onsubmit="handleAjaxForm(event)" class="inline">
                                             {% csrf_token %}
                                             <button type="submit" class="px-2 py-1 text-[10px] uppercase font-bold text-white {% if a.is_correct %}bg-gray-500{% else %}bg-green-500{% endif %} rounded hover:opacity-90">
-                                                {% if a.is_correct %}Unmark{% else %}Correct{% endif %}
+                                                {% if a.is_correct %}Démarquer{% else %}Correcte{% endif %}
                                             </button>
                                         </form>
                                     </div>
                                 </div>
                             {% endfor %}
-                            <button type="button" class="w-full text-center text-xs text-blue-600 font-bold p-2 border-2 border-dashed border-blue-200 rounded" onclick="toggleModal('addAnswerModal-{{ q.id }}')">+ Add Answer</button>
+                            <button type="button" class="w-full text-center text-xs text-blue-600 font-bold p-2 border-2 border-dashed border-blue-200 rounded" onclick="toggleModal('addAnswerModal-{{ q.id }}')">+ Ajouter une réponse</button>
                         </div>
                         <div id="addAnswerModal-{{ q.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
                             <div class="bg-white p-6 rounded-2xl w-96">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-lg font-bold">Add Answer</h2>
+                                    <h2 class="text-lg font-bold">Ajouter une réponse</h2>
                                     <button type="button" class="text-gray-400 font-bold" onclick="toggleModal('addAnswerModal-{{ q.id }}')">✕</button>
                                 </div>
                                 <form class="add-answer-form" data-question-id="{{ q.id }}">
                                     {% csrf_token %}
-                                    <input type="text" name="answer_text" placeholder="Answer Text" class="w-full p-2 border rounded text-sm mb-2" required>
+                                    <input type="text" name="answer_text" placeholder="Texte de la réponse" class="w-full p-2 border rounded text-sm mb-2" required>
                                     <label class="flex items-center gap-2 mb-4">
                                         <input type="checkbox" name="is_correct" value="true" class="w-4 h-4">
-                                        <span class="text-sm">Mark as Correct</span>
+                                        <span class="text-sm">Marquer comme correcte</span>
                                     </label>
-                                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl">Save Answer</button>
+                                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl">Enregistrer la réponse</button>
                                 </form>
                             </div>
                         </div>
@@ -383,21 +383,21 @@
 <div id="addQuizToThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-2xl w-96">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Add Quiz to Theme</h2>
+            <h2 class="text-xl font-bold">Ajouter un quiz au thème</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addQuizToThemeModal')">✕</button>
         </div>
         <form id="add-quiz-to-theme-form" action="{% url 'add_quiz' %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="theme_id" id="modal-theme-id">
             <div class="mb-3">
-                <label class="block text-sm font-bold mb-1">Quiz Title</label>
-                <input type="text" name="title" placeholder="Quiz Title" class="w-full p-2 border rounded-xl" required>
+                <label class="block text-sm font-bold mb-1">Titre du Quiz</label>
+                <input type="text" name="title" placeholder="Titre du Quiz" class="w-full p-2 border rounded-xl" required>
             </div>
             <div class="mb-4">
-                <label class="block text-sm font-bold mb-1">Passing Score (%)</label>
+                <label class="block text-sm font-bold mb-1">Score de réussite (%)</label>
                 <input type="number" name="passing_score" value="50" class="w-full p-2 border rounded-xl" required>
             </div>
-            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white w-full p-2.5 rounded-xl font-medium transition">Save Quiz</button>
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white w-full p-2.5 rounded-xl font-medium transition">Enregistrer le quiz</button>
         </form>
     </div>
 </div>
@@ -405,14 +405,14 @@
 <div id="addThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center">
     <div class="bg-white p-6 rounded-2xl w-96">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Add Quiz Theme</h2>
+            <h2 class="text-xl font-bold">Ajouter un thème de quiz</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addThemeModal')">✕</button>
         </div>
         <form id="theme-form" action="{% url 'add_theme' %}" method="POST">
             {% csrf_token %}
-            <input type="text" name="name" placeholder="Theme Name" class="w-full p-2 border rounded-xl mb-2" required>
-            <textarea name="description" placeholder="Description (Optional)" class="w-full p-2 border rounded-xl mb-2"></textarea>
-            <button type="submit" class="bg-indigo-600 text-white w-full p-2 rounded-xl">Save Theme</button>
+            <input type="text" name="name" placeholder="Nom du thème" class="w-full p-2 border rounded-xl mb-2" required>
+            <textarea name="description" placeholder="Description (Optionnelle)" class="w-full p-2 border rounded-xl mb-2"></textarea>
+            <button type="submit" class="bg-indigo-600 text-white w-full p-2 rounded-xl">Enregistrer le thème</button>
         </form>
     </div>
 </div>
@@ -488,16 +488,16 @@
                 const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
                 switchSection(savedSection);
             } else {
-                alert('Action failed.');
+                alert('Échec de l\'action.');
             }
         } catch (err) {
-            alert('An error occurred.');
+            alert('Une erreur est survenue.');
         }
     }
 
     async function handleAjaxDelete(e, elementSelector) {
         e.preventDefault();
-        if (!confirm('Are you sure you want to delete this item?')) return;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')) return;
         const form = e.target;
         try {
             const resp = await postAjax(form.action, new FormData(form));
@@ -511,10 +511,10 @@
                 const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
                 switchSection(savedSection);
             } else {
-                alert('Delete failed.');
+                alert('Échec de la suppression.');
             }
         } catch (err) {
-            alert('An error occurred.');
+            alert('Une erreur est survenue.');
         }
     }
 
@@ -550,13 +550,13 @@
                 }).then(async resp => {
                     const data = await resp.json();
                     if (resp.ok && data.status === 'success') {
-                        alert('Quiz assigned successfully!');
+                        alert('Quiz affecté avec succès !');
                         assignmentForm.reset();
                     } else {
-                        alert(data.message || 'Failed to assign quiz.');
+                        alert(data.message || 'Échec de l\'affectation du quiz.');
                     }
                 }).catch(err => {
-                    alert('An error occurred while assigning quiz.');
+                    alert('Une erreur est survenue lors de l\'affectation.');
                 });
             };
         }
@@ -615,139 +615,20 @@
         });
     }
 
-    // Initial binding
     bindDynamicEvents();
 
-    // Edit user modal opener helper
-    window.openEditUserModal = function(id, username, email) {
+    function openEditUserModal(id, username, email) {
         document.getElementById('edit-user-id').value = id;
         document.getElementById('edit-username').value = username;
         document.getElementById('edit-email').value = email;
         const form = document.getElementById('edit-user-form');
         form.action = `/aidadminpage/edit_user/${id}/`;
         toggleModal('editUserModal');
-    };
+    }
 
-    window.openAddQuizToThemeModal = function(themeId) {
+    function openAddQuizToThemeModal(themeId) {
         document.getElementById('modal-theme-id').value = themeId;
         toggleModal('addQuizToThemeModal');
-    };
-
-    // Profile Settings Handlers
-    const adminProfileForm = document.getElementById('admin-profile-form');
-    if (adminProfileForm) {
-        adminProfileForm.onsubmit = async (e) => {
-            e.preventDefault();
-            const statusDiv = document.getElementById('profile-update-status');
-            statusDiv.textContent = "Updating profile details...";
-            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
-            try {
-                const resp = await postAjax('{% url "admin_update_profile" %}', new FormData(e.target));
-                const data = await resp.json();
-                if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Profile details updated successfully!";
-                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
-                    setTimeout(() => refreshAdminContent(), 1000);
-                } else {
-                    statusDiv.textContent = data.message || "Failed to update profile details.";
-                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-                }
-            } catch (err) {
-                statusDiv.textContent = "An error occurred.";
-                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-            }
-        };
-    }
-
-    const sendCodeBtn = document.getElementById('send-code-btn');
-    if (sendCodeBtn) {
-        sendCodeBtn.onclick = async () => {
-            const statusDiv = document.getElementById('send-code-status');
-            statusDiv.textContent = "Sending verification code...";
-            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
-            try {
-                const resp = await postAjax('{% url "admin_send_verification_code" %}', new FormData());
-                const data = await resp.json();
-                if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Verification code sent to your email successfully!";
-                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
-                    if (data.debug_code) {
-                        document.getElementById('debug-code-hint').textContent = `(Debug Code: ${data.debug_code})`;
-                    }
-                } else {
-                    statusDiv.textContent = "Failed to send verification code.";
-                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-                }
-            } catch (err) {
-                statusDiv.textContent = "An error occurred.";
-                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-            }
-        };
-    }
-
-    const verifyCodeForm = document.getElementById('verify-code-form');
-    if (verifyCodeForm) {
-        verifyCodeForm.onsubmit = async (e) => {
-            e.preventDefault();
-            const statusDiv = document.getElementById('verify-code-status');
-            statusDiv.textContent = "Verifying code...";
-            statusDiv.className = "text-sm font-medium mt-1 text-blue-600";
-            try {
-                const resp = await postAjax('{% url "admin_verify_code_only" %}', new FormData(e.target));
-                const data = await resp.json();
-                if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Code verified! Password modification unlocked.";
-                    statusDiv.className = "text-sm font-medium mt-1 text-green-600";
-                    
-                    // Unlock password inputs & reset button
-                    const pwdInput = document.getElementById('new-password-input');
-                    const resetBtn = document.getElementById('reset-password-btn');
-                    pwdInput.disabled = false;
-                    pwdInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
-                    resetBtn.disabled = false;
-                    resetBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
-                    statusDiv.textContent = data.message || "Invalid or expired verification code.";
-                    statusDiv.className = "text-sm font-medium mt-1 text-red-600";
-                }
-            } catch (err) {
-                statusDiv.textContent = "An error occurred.";
-                statusDiv.className = "text-sm font-medium mt-1 text-red-600";
-            }
-        };
-    }
-
-    const verifyResetForm = document.getElementById('verify-reset-form');
-    if (verifyResetForm) {
-        verifyResetForm.onsubmit = async (e) => {
-            e.preventDefault();
-            const statusDiv = document.getElementById('verify-reset-status');
-            statusDiv.textContent = "Updating password...";
-            statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
-            try {
-                const fd = new FormData(e.target);
-                fd.append('verification_code', document.getElementById('verification-code-input').value);
-                const resp = await postAjax('{% url "admin_verify_and_reset_password" %}', fd);
-                const data = await resp.json();
-                if (resp.ok && data.status === 'success') {
-                    statusDiv.textContent = "Password changed successfully!";
-                    statusDiv.className = "text-sm font-medium mt-2 text-green-600";
-                    e.target.reset();
-                    document.getElementById('verify-code-form').reset();
-                    document.getElementById('new-password-input').disabled = true;
-                    document.getElementById('new-password-input').classList.add('bg-gray-100', 'cursor-not-allowed');
-                    document.getElementById('reset-password-btn').disabled = true;
-                    document.getElementById('reset-password-btn').classList.add('opacity-50', 'cursor-not-allowed');
-                } else {
-                    statusDiv.textContent = data.message || "Failed to update password.";
-                    statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-                }
-            } catch (err) {
-                statusDiv.textContent = "An error occurred.";
-                statusDiv.className = "text-sm font-medium mt-2 text-red-600";
-            }
-        };
     }
 </script>
 {% endblock %}
-
