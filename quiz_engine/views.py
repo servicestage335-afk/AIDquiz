@@ -454,13 +454,17 @@ def edit_user(request, user_id):
 def admin_update_profile(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        if username:
+        email = request.POST.get('email')
+        if username and email:
             if User.objects.filter(username=username).exclude(id=request.user.id).exists():
                 return JsonResponse({'status': 'error', 'message': 'Le nom d\'utilisateur est déjà pris.'}, status=400)
+            if User.objects.filter(email=email).exclude(id=request.user.id).exists():
+                return JsonResponse({'status': 'error', 'message': 'Cet email est déjà utilisé.'}, status=400)
             request.user.username = username
+            request.user.email = email
             request.user.save()
             return JsonResponse({'status': 'success'})
-        return JsonResponse({'status': 'error', 'message': 'Le nom d\'utilisateur est obligatoire.'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Le nom d\'utilisateur et l\'email sont obligatoires.'}, status=400)
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
