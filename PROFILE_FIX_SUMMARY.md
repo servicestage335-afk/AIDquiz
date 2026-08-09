@@ -1,4 +1,3 @@
-# Profile Settings Fix - PostgreSQL Migration
 
 ## Issue
 The profile settings form in the admin page (`/aidadminpage/`) was not updating user information (username, email) after switching to PostgreSQL on Railway.
