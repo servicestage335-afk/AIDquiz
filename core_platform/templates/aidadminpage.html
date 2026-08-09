@@ -236,7 +236,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-bold mb-1">Adresse Email</label>
-                            <input type="email" name="email" id="profile-email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl" required>
+                            <input type="email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled>
                         </div>
                         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Enregistrer les modifications</button>
                         <div id="profile-update-status" class="text-sm font-medium mt-2"></div>
