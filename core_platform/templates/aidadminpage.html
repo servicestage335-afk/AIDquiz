@@ -228,7 +228,7 @@
                 <!-- Edit Admin Account Details -->
                 <div class="glass p-6 rounded-2xl border border-white/20 bg-white">
                     <h2 class="text-xl font-bold mb-4 text-gray-800">Modifier les informations du compte</h2>
-                    <form id="admin-profile-form" class="space-y-4">
+                    <form id="admin-profile-form" action="{% url 'admin_update_profile' %}" method="POST" class="space-y-4">
                         {% csrf_token %}
                         <div>
                             <label class="block text-sm font-bold mb-1">Nom d'utilisateur</label>
@@ -519,6 +519,33 @@
     }
 
     function bindDynamicEvents() {
+        // Re-attach admin profile form
+        const adminProfileForm = document.getElementById('admin-profile-form');
+        if (adminProfileForm) {
+            adminProfileForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const statusDiv = document.getElementById('profile-update-status');
+                try {
+                    const fd = new FormData(adminProfileForm);
+                    const resp = await fetch('{% url "admin_update_profile" %}', {
+                        method: 'POST',
+                        body: fd,
+                        headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': '{{ csrf_token }}'}
+                    });
+                    const data = await resp.json();
+                    if (resp.ok && data.status === 'success') {
+                        statusDiv.innerHTML = '<span class="text-green-600">Profil mis à jour avec succès !</span>';
+                        // Refresh after 1 second to show updated data
+                        setTimeout(() => refreshAdminContent(), 1000);
+                    } else {
+                        statusDiv.innerHTML = `<span class="text-red-600">${data.message || 'Échec de la mise à jour.'}</span>`;
+                    }
+                } catch (err) {
+                    statusDiv.innerHTML = '<span class="text-red-600">Une erreur est survenue.</span>';
+                }
+            };
+        }
+
         // Re-attach theme form
         const themeForm = document.getElementById('theme-form');
         if (themeForm) {
