@@ -15,9 +15,8 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold mb-1">Adresse Email</label>
-                    <input type="email" value="{{ request.user.email }}" class="w-full p-2 border rounded-xl bg-gray-100 cursor-not-allowed" disabled>
+                    <p class="text-sm text-gray-600 p-2">{{ request.user.email }}</p>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl font-medium transition">Enregistrer les modifications</button>
                 <div id="profile-update-status" class="text-sm font-medium mt-2"></div>
             </form>
         </div>
@@ -79,14 +78,16 @@
     }
 
     const userProfileForm = document.getElementById('user-profile-form');
-    if (userProfileForm) {
-        userProfileForm.onsubmit = async (e) => {
-            e.preventDefault();
+    const usernameInput = document.getElementById('profile-username');
+    if (userProfileForm && usernameInput) {
+        usernameInput.addEventListener('blur', async () => {
             const statusDiv = document.getElementById('profile-update-status');
             statusDiv.textContent = "Mise à jour du profil...";
             statusDiv.className = "text-sm font-medium mt-2 text-blue-600";
             try {
-                const resp = await postAjax('{% url "admin_update_profile" %}', new FormData(e.target));
+                const formData = new FormData();
+                formData.append('username', usernameInput.value);
+                const resp = await postAjax('{% url "admin_update_profile" %}', formData);
                 const data = await resp.json();
                 if (resp.ok && data.status === 'success') {
                     statusDiv.textContent = "Profil mis à jour avec succès !";
@@ -99,7 +100,7 @@
                 statusDiv.textContent = "Une erreur est survenue.";
                 statusDiv.className = "text-sm font-medium mt-2 text-red-600";
             }
-        };
+        });
     }
 
     const sendCodeBtn = document.getElementById('send-code-btn');
