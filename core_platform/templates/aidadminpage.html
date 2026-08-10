@@ -219,7 +219,7 @@
                     <form id="admin-profile-form" class="space-y-4">
                         {% csrf_token %}
                         <div>
-                            <label class="block text-sm font-bold mb-1">Nom d'utilisateur</label>
+                            <label class="block text-sm font-bold mb-1">Nom d'utilisateur </label>
                             <input type="text" name="username" id="profile-username" value="{{ request.user.username }}" class="w-full p-2 border rounded-xl" required>
                         </div>
                         <div>
