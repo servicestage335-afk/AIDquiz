@@ -52,6 +52,10 @@ WSGI_APPLICATION = 'core_platform.wsgi.application'
 
 # Database
 import dj_database_url
+import os
+
+db_url = os.environ.get('DATABASE_URL')
+print(f"DEBUG_RAILWAY: DATABASE_URL is present = {bool(db_url)}")
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -61,6 +65,7 @@ DATABASES = {
         default='sqlite:///db.sqlite3'
     )
 }
+print(f"DEBUG_RAILWAY: DATABASES default engine = {DATABASES['default'].get('ENGINE')}")
 
 # Use cookie-based sessions to avoid SQLite session table disk I/O errors.
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'

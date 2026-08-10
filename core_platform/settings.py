@@ -90,6 +90,10 @@ WSGI_APPLICATION = 'core_platform.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 import dj_database_url
+import os
+
+db_url = os.environ.get('DATABASE_URL')
+print(f"DEBUG_RAILWAY: DATABASE_URL is present = {bool(db_url)}")
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -99,6 +103,7 @@ DATABASES = {
         default='sqlite:///db.sqlite3'
     )
 }
+print(f"DEBUG_RAILWAY: DATABASES default engine = {DATABASES['default'].get('ENGINE')}")
 
 
 # Password validation
