@@ -2,189 +2,637 @@
 {% load static %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 py-10">
+<div class="max-w-6xl mx-auto px-4 py-10">
     <!-- Breadcrumbs / Tag -->
     <div class="mb-6 flex items-center gap-2 text-sm text-slate-500 font-medium">
         <a href="{% url 'dashboard' %}" class="hover:text-blue-600 transition">Accueil</a>
         <span>/</span>
-        <span class="text-slate-800">Actualités & Articles</span>
+        <span class="text-slate-800">Actualités & Catalogue</span>
         <span>/</span>
-        <span class="text-blue-600 font-semibold">Renforcement des capacités en Afrique</span>
+        <span class="text-blue-600 font-semibold">Académie AID 2026-2027</span>
     </div>
 
     <!-- Article Header -->
     <header class="mb-10 text-center md:text-left">
         <div class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider rounded-full mb-4">
-            Académie AID • Renforcement des Capacités & Management
+            Académie Internationale d’Innovation et de Développement (AID)
         </div>
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-            Renforcement des capacités en Afrique : Comment AID accompagne la réussite des projets de développement
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+            NOS FORMATIONS 2026-2027 : Conduire le changement
         </h1>
         <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-4xl">
-            Le succès des programmes et projets de développement en Afrique repose aujourd'hui sur un facteur clé : la haute performance de leurs équipes managériales. Face à des exigences internationales de plus en plus strictes, la formation continue des cadres n'est plus une option, c’est un levier stratégique majeur.
+            AID : VOTRE PARTENAIRE POUR L’INNOVATION ET LE DÉVELOPPEMENT DURABLE ! Nos formations s’adressent aux professionnels et cadres impliqués dans les projets et programmes de développement.
         </p>
     </header>
 
-    <!-- Featured Image Simulation / SEO Alt Text Reference -->
-    <div class="mb-12 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900 relative group">
-        <div class="aspect-w-16 aspect-h-9 w-full h-[350px] md:h-[450px] bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 flex items-center justify-center p-8 text-center relative overflow-hidden">
-            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div class="relative z-10 max-w-2xl">
-                <span class="inline-block px-4 py-1.5 bg-blue-600/80 text-white font-semibold text-xs tracking-wider uppercase rounded-full mb-4 backdrop-blur-md">
-                    Séminaires Exécutifs • Hammamet & Toute l'Afrique
-                </span>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">
-                    Excellence Managériale et Gouvernance des Projets
-                </h2>
-                <p class="text-slate-300 text-sm md:text-base">
-                    Illustration : Séminaire de formation des cadres et coordinateurs de projets à l'Académie AID.
-                </p>
-            </div>
+    <!-- Video at the beginning -->
+    <div class="mb-12 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-900 relative">
+        <div class="w-full aspect-video bg-black flex items-center justify-center relative">
+            <video class="w-full h-full object-cover" controls autoplay muted loop>
+                <source src="{% static 'video.mp4' %}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
         </div>
-        <div class="bg-slate-800 px-6 py-3 text-xs text-slate-400 flex justify-between items-center border-t border-slate-700/60">
-            <span>📷 Référence Alt SEO : <code class="text-blue-400">formation-cadres-developpement-afrique-aid.jpg</code></span>
-            <span>Académie Internationale d’Innovation et de Développement (AID)</span>
+        <div class="bg-slate-800 px-6 py-3 text-xs text-slate-300 flex justify-between items-center border-t border-slate-700/60">
+            <span>🎥 Présentation Académie AID • Conduire le changement</span>
+            <span class="text-blue-400 font-semibold">www.aid-academy.com</span>
         </div>
     </div>
 
-    <!-- Article Content Body -->
-    <article class="prose prose-slate lg:prose-lg max-w-none space-y-8 text-slate-700 leading-relaxed">
-        <p class="text-lg font-medium text-slate-800">
-            C’est précisément au cœur de cet enjeu que se positionne l’<strong>Académie Internationale d’Innovation et de Développement (AID)</strong>. En tant qu'institution spécialisée, AID conçoit et anime des programmes de formation d’excellence dédiés aux professionnels, coordonnateurs de projets, hauts fonctionnaires et gestionnaires de programmes sur tout le continent africain.
-        </p>
-
-        <section class="bg-white/80 backdrop-blur-md p-8 rounded-3xl border border-slate-200/80 shadow-sm my-8">
-            <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-                <span class="w-2.5 h-8 bg-blue-600 rounded-full inline-block"></span>
-                Les activités phares d'AID : Un hub d’apprentissage et d’innovation
-            </h2>
-            <p class="mb-6">
-                L'approche d'AID repose sur une vision globale du développement des compétences. Nos activités ne se limitent pas à de la théorie ; elles englobent une dynamique complète d'accompagnement institutionnel :
+    <!-- Introduction & Key Highlights Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">🌍</div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">Public Cible International</h3>
+            <p class="text-sm text-slate-600">
+                Professionnels, cadres, institutions publiques, parapubliques, collectivités locales et ONG de nombreux pays en développement.
             </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">01</div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2">Séminaires de formation intensifs</h3>
-                    <p class="text-sm text-slate-600">
-                        Des sessions immersives de haut niveau, organisées dans des cadres propices à l'apprentissage (notamment à Hammamet, Tunisie), réunissant des participants venus de toute l'Afrique.
-                    </p>
-                </div>
-
-                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
-                    <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">02</div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2">Ateliers et conventions institutionnelles</h3>
-                    <p class="text-sm text-slate-600">
-                        AID collabore activement avec des instituts d'enseignement supérieur et des centres de recherche (partenariats et conventions de coopération technique) pour créer des ponts solides entre l'expertise académique et les réalités du terrain.
-                    </p>
-                </div>
-
-                <div class="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/60 hover:border-blue-300 transition shadow-sm">
-                    <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center font-bold mb-4 text-lg">03</div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2">Échanges et partages d’expériences</h3>
-                    <p class="text-sm text-slate-600">
-                        Nos ateliers offrent une plateforme unique de networking, permettant aux cadres de différents pays africains de partager leurs bonnes pratiques et de bâtir des réseaux professionnels durables.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="my-10">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                <span class="w-2.5 h-8 bg-indigo-600 rounded-full inline-block"></span>
-                Nos domaines d'expertise : Des formations adaptées aux défis du continent
-            </h2>
-            <p class="mb-6">
-                Pour répondre précisément aux critères d'exigence des grands bailleurs de fonds internationaux (Banque Mondiale, BAD, AFD, etc.), AID a structuré son catalogue autour des thématiques les plus critiques du management de projet moderne.
+        </div>
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">⚙️</div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">Modalités Flexibles</h3>
+            <p class="text-sm text-slate-600">
+                Formations sur catalogue, sur mesure adaptées aux besoins, sur sites, en ligne, ou en immersion terrain (Hammamet, Bruxelles, Casablanca, etc.).
             </p>
+        </div>
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">🎯</div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">Approche Pratique</h3>
+            <p class="text-sm text-slate-600">
+                Ateliers de travail interactifs, interventions d’experts hautement qualifiés et conditions d’hébergement avantageuses.
+            </p>
+        </div>
+    </section>
 
-            <div class="space-y-6">
-                <!-- Expertise 1 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
-                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-blue-500/20">1</div>
+    <!-- Detailed Formations Sections -->
+    <article class="space-y-12">
+        
+        <!-- Section 1: Développement digital & e-Gov -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-blue-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Développement digital et modernisation de l’administration publique & e-Gov</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Politiques de sauvegarde environnementale et sociale</h3>
-                        <p class="text-slate-600">
-                            Le respect des normes environnementales et sociales est désormais un critère non négociable pour le déclenchement et le maintien des financements. Nos formations spécialisées permettent aux équipes de maîtriser les cadres de sauvegarde, d'anticiper les risques et de gérer efficacement les impacts communautaires sur le terrain.
-                        </p>
+                        <h4 class="font-bold text-slate-900 text-sm">Développement du gouvernement électronique (e-Gov) et l’innovation gouvernementale</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
                     </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">3 500 €</span>
                 </div>
-
-                <!-- Expertise 2 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
-                    <div class="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-indigo-500/20">2</div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Évaluation socio-économique des projets</h3>
-                        <p class="text-slate-600">
-                            Mesurer la rentabilité financière d'un projet ne suffit plus. Les programmes de développement doivent prouver leur impact réel sur la société. AID forme les gestionnaires aux méthodologies avancées d'évaluation socio-économique, à la gestion axée sur les résultats (GAR) et à la mise en place d'indicateurs d'impact pertinents.
-                        </p>
+                        <h4 class="font-bold text-slate-900 text-sm">Digitalisation des services publics et modernisation de l’administration</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
                     </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">3 500 €</span>
                 </div>
-
-                <!-- Expertise 3 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
-                    <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-emerald-500/20">3</div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Gestion des contrats et procédures de passation des marchés</h3>
-                        <p class="text-slate-600">
-                            La transparence et la rigueur dans la gestion contractuelle sont les garants de la bonne exécution des budgets. Nous proposons des modules pratiques pour maîtriser le droit des contrats, les procédures de passation de marchés et la gestion des litiges.
-                        </p>
+                        <h4 class="font-bold text-slate-900 text-sm">Mise en œuvre, utilisation et gestion de l’information numérique : Les clés de réussite</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Casablanca</span>
                     </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">2 200 €</span>
                 </div>
-
-                <!-- Expertise 4 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-start">
-                    <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-teal-500/20">4</div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Transition écologique, décarbonation et finance climat</h3>
-                        <p class="text-slate-600">
-                            Face aux défis climatiques, AID propose des parcours pointus pour former les futurs cadres responsables bilan carbone et stratégie de décarbonation, un enjeu clé pour l'avenir des infrastructures en Afrique.
-                        </p>
+                        <h4 class="font-bold text-slate-900 text-sm">Production et gestion des documents électroniques</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
                     </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Systèmes de gestion des bases de données</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Création de communautés et de réseaux électroniques</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Bruxelles</span>
+                    </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Conduite d’un projet de dématérialisation et de gestion de contenus</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-blue-600 text-sm shrink-0">3 500 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Projets & Programmes de développement -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-indigo-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Projets et programmes de développement</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Exécution des projets et programmes de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Suivi et évaluation des projets et programmes de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Financement des projets et programmes</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Analyse de données pour planificateurs de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Outils informatiques pour un suivi-évaluation optimisé des projets</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">MS PROJECT : planifier et suivre l’exécution des projets</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Mise en œuvre d’une démarche de responsabilité sociétale au sein des organisations</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Préparation à la certification en gestion de projet PMP® (Project Management Professional)</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">2 800 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Politique sociale pour planificateurs du développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Coordonner les projets et programmes de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">La communication pour le développement C4D</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Audit et contrôle des projets et programmes de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Planification stratégique et opérationnelle des projets et programmes</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-indigo-600 text-sm shrink-0">3 500 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image 1 in between -->
+        <div class="my-8 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
+            <img src="{% static '1.jfif' %}" alt="Académie AID - Formation sur site" class="w-full h-[350px] object-cover">
+        </div>
+
+        <!-- Section 3: Changement Climatique -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-emerald-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Changement Climatique</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Prévention des risques et gestion des catastrophes au niveau communal</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Bruxelles</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Intégration du changement climatique dans les processus nationaux de développement</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Outils d’analyse de la résilience et planification locale sensible au changement climatique</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Formulation et mise en œuvre d’un plan d’adaptation national PAN</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Mise en œuvre d’une stratégie nationale pour l'éducation aux changements climatiques</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Bruxelles</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Evaluation de la vulnérabilité au changement climatique</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Casablanca</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Outils de financement pour lutter contre les changements climatiques</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-600 text-sm shrink-0">3 500 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Eau et Assainissement -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-teal-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Eau et Assainissement</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gestion durable des ressources en eau dans un contexte de stress hydrique</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Géomatique pour la Gestion Intégrée des Ressources en Eau (GIRE)</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Planification et gestion durable des infrastructures hydroagricoles</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Bruxelles</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gestion concertée des aquifères transfrontaliers</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gestion de projets en eau potable et assainissement</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Hygiène et sécurité en station d’eau potable et usées</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Tunis</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Réglementation, gestion et mise aux normes des plans d’eau</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Casablanca</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Changement climatique et biodiversité : adaptation de la gestion des ressources en eau</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-teal-600 text-sm shrink-0">2 200 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image 2 in between -->
+        <div class="my-8 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
+            <img src="{% static '2.jfif' %}" alt="Académie AID - Séminaire International" class="w-full h-[350px] object-cover">
+        </div>
+
+        <!-- Section 5: Développement Durable, Biodiversité & Énergie -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-cyan-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Développement Durable, Biodiversité et Énergie</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Stratégie et budgétisation des ODD</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Étude d’impact environnemental et social (EIES)</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gestion des aires protégées et de la Biodiversité</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Conduite de projets énergies renouvelables et efficacité énergétique</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Formation pratique au solaire photovoltaïque</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Politiques de sauvegarde environnementale et sociale de la Banque Mondiale</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-cyan-600 text-sm shrink-0">3 500 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Développement Agricole, Santé, Genre & Éducation -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-amber-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Développement Agricole, Sécurité Alimentaire, Santé, Genre & Éducation</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Agriculture intelligente : Enjeux, démarche, bonnes pratiques</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-amber-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Évaluation de la sécurité alimentaire</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Casablanca</span>
+                    </div>
+                    <span class="font-extrabold text-amber-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Elaboration, suivi et évaluation des plans nationaux de santé</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-amber-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">La Budgétisation sensible au genre</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-amber-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gouvernance et pilotage du secteur éducatif</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-amber-600 text-sm shrink-0">3 500 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image 3 in between -->
+        <div class="my-8 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
+            <img src="{% static '3.jfif' %}" alt="Académie AID - Ateliers et Travaux de Groupe" class="w-full h-[350px] object-cover">
+        </div>
+
+        <!-- Section 7: Marchés Publics, Finances Publiques & Décentralisation -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-purple-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Marchés Publics, Finances Publiques & Décentralisation</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Dématérialisation des procédures de marchés publics</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Règles et procédures de passation des marchés : Nouvelles réformes des bailleurs</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Le montage et la mise en œuvre d'un partenariat public-privé (PPP) efficace</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Préparation et exécution des lois de finances</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Audit et contrôle des finances publiques</h4>
+                        <span class="text-xs text-slate-500">2 semaines • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">3 500 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Développement local et gestion des collectivités territoriales</h4>
+                        <span class="text-xs text-slate-500">1 semaine • Hammamet</span>
+                    </div>
+                    <span class="font-extrabold text-purple-600 text-sm shrink-0">2 200 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Management, PMO, Agile, P3O & Lean Six Sigma -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                <span class="w-3 h-10 bg-rose-600 rounded-full"></span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Certifications Internationales, P3O, Agile & Lean Six Sigma</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">P3O® Foundation Certification</h4>
+                        <span class="text-xs text-slate-500">6 Jours (21h)</span>
+                    </div>
+                    <span class="font-extrabold text-rose-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Formation Lean Six Sigma®, Green Belt, certification</h4>
+                        <span class="text-xs text-slate-500">10 Jours (35h)</span>
+                    </div>
+                    <span class="font-extrabold text-rose-600 text-sm shrink-0">4 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Mise en place et gestion des bureaux de projet (PMO)</h4>
+                        <span class="text-xs text-slate-500">4 Jours (15h)</span>
+                    </div>
+                    <span class="font-extrabold text-rose-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Gestion agile de projets avec SCRUM</h4>
+                        <span class="text-xs text-slate-500">4 Jours (15h)</span>
+                    </div>
+                    <span class="font-extrabold text-rose-600 text-sm shrink-0">2 200 €</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Transformation digitale : les clés de la réussite</h4>
+                        <span class="text-xs text-slate-500">4 Jours (15h)</span>
+                    </div>
+                    <span class="font-extrabold text-rose-600 text-sm shrink-0">2 200 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image 4 in between -->
+        <div class="my-8 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
+            <img src="{% static '4.jfif' %}" alt="Académie AID - Remise de Certificats" class="w-full h-[350px] object-cover">
+        </div>
+
+        <!-- Avantages & Offres Exclusives -->
+        <section class="bg-gradient-to-br from-blue-900 to-indigo-950 text-white p-8 md:p-12 rounded-3xl shadow-xl my-10">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6">Notre Offre & Avantages Exclusifs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-slate-200 text-sm md:text-base">
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/10">
+                    <h3 class="font-bold text-white text-lg mb-2">📅 Flexibilité Calendaires</h3>
+                    <p>Les dates de nos sessions sont ajustées en concertation avec les bénéficiaires pour s'adapter parfaitement à leurs contraintes opérationnelles.</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/10">
+                    <h3 class="font-bold text-white text-lg mb-2">👥 Réductions pour Groupes</h3>
+                    <p>10 % dès 2 participants • 15 % dès 3 participants • 20 % à partir de 04 participants.</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/10">
+                    <h3 class="font-bold text-white text-lg mb-2">🎓 Fidélité Anciens Participants</h3>
+                    <p>En tant qu'ancien participant de AID, bénéficiez d'une réduction de 10 % sur l'ensemble de notre catalogue.</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-md border border-white/10">
+                    <h3 class="font-bold text-white text-lg mb-2">🏨 Logistique & Séjour Tout Compris</h3>
+                    <p>Conditions d’hébergement très avantageuses à prix préférentiels, excursions touristiques, visites de terrain et Brunch & Saveurs.</p>
                 </div>
             </div>
         </section>
 
-        <section class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-8 md:p-12 rounded-3xl shadow-xl my-10 relative overflow-hidden">
-            <div class="absolute right-0 bottom-0 opacity-10 translate-x-10 translate-y-10">
-                <svg class="w-96 h-96" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-            </div>
-            <div class="relative z-10 max-w-3xl">
-                <h2 class="text-2xl md:text-3xl font-bold mb-4">Pourquoi choisir l'Académie AID pour vos équipes ?</h2>
-                <p class="text-slate-300 mb-6 leading-relaxed">
-                    <strong>L'expertise terrain avant tout :</strong> Les formations d'AID sont animées exclusivement par un réseau de consultants et d'experts internationaux chevronnés. Chaque module alterne études de cas réel, ateliers pratiques et partages d'outils directement applicables dès le retour en mission.
-                </p>
-                <p class="text-slate-300 leading-relaxed">
-                    Notre ingénierie pédagogique est pensée pour offrir une expérience fluide, de l'inscription via nos plateformes en ligne jusqu'à la remise des certifications. En choisissant AID, les organisations s'assurent d'un alignement parfait entre les compétences de leurs collaborateurs et les exigences de performance des partenaires au développement.
-                </p>
-            </div>
-        </section>
-
+        <!-- Call to Action -->
         <section class="text-center py-8">
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">Rejoignez nos prochaines sessions de formation</h2>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">Réservez vos places dès aujourd'hui</h2>
             <p class="text-slate-600 max-w-2xl mx-auto mb-8">
-                Vous dirigez une unité de gestion de projet ou vous souhaitez propulser votre carrière de manager de programme ? Découvrez notre calendrier de séminaires et planifiez dès maintenant le renforcement de vos compétences.
+                Toutes nos formations sont aussi disponibles en ligne. Contactez-nous pour recevoir le catalogue complet ou planifier une session sur-mesure.
             </p>
 
             <div class="bg-white/90 backdrop-blur-md p-8 rounded-3xl border border-blue-100 shadow-xl max-w-2xl mx-auto">
-                <div class="space-y-3 mb-6 text-slate-700">
-                    <p class="font-semibold">Des questions sur nos programmes ?</p>
-                    <p class="font-semibold">Besoin d'une proposition sur-mesure pour votre institution ?</p>
-                </div>
-
-                <!-- Elementor-style Action Button leading to WPForms/Contact Modal or Action -->
-                <div class="pt-2">
-                    <button onclick="toggleModal('contactModal')" class="inline-flex items-center justify-center w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-blue-500/25 transition-all text-base tracking-wide">
-                        <span>Contacter l'équipe AID / Demander le catalogue de formation</span>
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </button>
-                </div>
+                <button onclick="toggleModal('contactModal')" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-blue-500/25 transition-all text-base tracking-wide">
+                    <span>Contacter l'équipe AID / Demander le catalogue</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
             </div>
         </section>
     </article>
 </div>
 
-<!-- Contact Modal simulating WPForms Integration -->
+<!-- Bottom Contact Bar sticking right on top of footer / 2023 bar -->
+<div class="bg-slate-900 text-white py-8 px-4 border-t border-slate-800 mt-16">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div>
+            <h3 class="text-xl font-bold mb-2">Contacter l'équipe AID</h3>
+            <p class="text-slate-400 text-sm max-w-md">
+                Contactez-nous dès aujourd'hui pour réserver vos places et profiter de nos offres exclusives.
+            </p>
+        </div>
+        <div class="flex flex-col md:flex-row items-center gap-6 text-sm text-slate-300">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                <span>00216 46 460 560 / 52 330 241</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span>contact@aid-academy.com</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                <span>www.aid-academy.com</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Modal -->
 <div id="contactModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl relative animate-in fade-in zoom-in duration-200">
         <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
@@ -211,10 +659,10 @@
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Message ou Thématique souhaitée</label>
-                <textarea name="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="Je souhaite recevoir le catalogue des formations et planifier un séminaire en sauvegardes environnementales..."></textarea>
+                <textarea name="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none transition text-sm" placeholder="Je souhaite recevoir le catalogue des formations 2026-2027..."></textarea>
             </div>
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/20 transition text-sm">
-                Envoyer la demande (Simulé WPForms)
+                Envoyer la demande
             </button>
             <div id="contact-success-msg" class="hidden text-center text-sm font-semibold text-emerald-600 mt-2">
                 ✓ Votre demande a bien été transmise à l'équipe AID. Nous vous répondrons sous 24h.
