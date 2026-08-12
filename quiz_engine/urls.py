@@ -37,5 +37,6 @@ urlpatterns = [
     path('profile/', views.user_profile_view, name='user_profile'),
     path('aidblog/', views.aid_blog_view, name='aid_blog'),
     path('AID/', views.public_aid_page, name='public_aid_page'),
+    path('aid/', views.public_aid_page, name='public_aid_page_lower'),
     path('submit_contact_request/', views.submit_contact_request, name='submit_contact_request'),
 ]
