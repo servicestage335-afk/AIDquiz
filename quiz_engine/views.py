@@ -503,7 +503,11 @@ def admin_verify_code_only(request):
 def user_profile_view(request):
     return render(request, 'user_profile.html')
 
+@login_required
 def aid_blog_view(request):
+    return render(request, 'aidblog.html')
+
+def public_aid_page(request):
     return render(request, 'aidblog.html')
 
 @login_required
