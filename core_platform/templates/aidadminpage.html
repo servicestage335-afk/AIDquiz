@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+    .admin-nav.active {
+        background-color: #fee2e2 !important;
+        color: #991b1b !important;
+        font-weight: 700;
+    }
+</style>
 <div class="flex flex-col lg:flex-row h-screen bg-gray-50 overflow-hidden">
     <!-- Mobile Header Bar with Hamburger -->
     <div class="lg:hidden bg-white border-b px-4 py-3 flex items-center justify-between shrink-0 z-20">
@@ -438,6 +445,13 @@
             target.classList.remove('hidden');
             localStorage.setItem(ACTIVE_SECTION_KEY, sectionId);
         }
+        document.querySelectorAll('.admin-nav').forEach(btn => {
+            if (btn.dataset.section === sectionId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
     }
 
     document.querySelectorAll('.admin-nav').forEach(btn => {
