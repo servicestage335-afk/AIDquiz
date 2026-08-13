@@ -451,7 +451,7 @@
 
     // Restore active section on load
     window.addEventListener('DOMContentLoaded', () => {
-        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'content';
         switchSection(savedSection);
     });
 
@@ -501,7 +501,7 @@
                 if (successCallback) successCallback();
                 await refreshAdminContent();
                 // Ensure current active section remains visible after refresh
-                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'content';
                 switchSection(savedSection);
             } else {
                 alert('Échec de l\'action.');
@@ -524,7 +524,7 @@
                 } else {
                     await refreshAdminContent();
                 }
-                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'content';
                 switchSection(savedSection);
             } else {
                 alert('Échec de la suppression.');
@@ -631,7 +631,7 @@
                 }).then(async resp => {
                     if (resp.ok) {
                         await refreshAdminContent();
-                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'content';
                         switchSection(savedSection);
                     }
                 });
@@ -651,7 +651,7 @@
                 }).then(async resp => {
                     if (resp.ok) {
                         await refreshAdminContent();
-                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'overview';
+                        const savedSection = localStorage.getItem(ACTIVE_SECTION_KEY) || 'content';
                         switchSection(savedSection);
                     }
                 });
