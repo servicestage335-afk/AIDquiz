@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="flex h-screen bg-gray-50 overflow-hidden">
+<div class="flex flex-col lg:flex-row h-screen bg-gray-50 overflow-hidden">
+    <!-- Mobile Header Bar with Hamburger -->
+    <div class="lg:hidden bg-white border-b px-4 py-3 flex items-center justify-between shrink-0 z-20">
+        <h2 class="text-lg font-extrabold text-gray-800">Administration AID</h2>
+        <button id="mobile-menu-toggle" onclick="toggleMobileSidebar()" class="p-2 text-gray-600 hover:text-indigo-600 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </div>
+
+    <!-- Sidebar backdrop overlay for mobile -->
+    <div id="sidebar-overlay" onclick="toggleMobileSidebar()" class="hidden lg:hidden fixed inset-0 bg-black/50 z-30"></div>
+
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r flex flex-col">
-        <div class="p-6 border-b">
+    <aside id="admin-sidebar" class="w-64 bg-white border-r flex flex-col fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-40">
+        <div class="p-6 border-b flex items-center justify-between">
             <h2 class="text-xl font-extrabold text-gray-800">Administration AID</h2>
+            <button class="lg:hidden text-gray-400 hover:text-gray-600 font-bold text-xl" onclick="toggleMobileSidebar()">✕</button>
         </div>
-        <nav class="flex-1 p-4 space-y-1">
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
             <button data-section="overview" class="admin-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition">Aperçu</button>
             <button data-section="users" class="admin-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition">Utilisateurs</button>
             <button data-section="requests" class="admin-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition">Demandes</button>
@@ -17,7 +29,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto p-8">
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
         <section id="overview" class="admin-section hidden">
             <h1 class="text-3xl font-bold mb-6">Aperçu</h1>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -38,8 +50,8 @@
 
         <section id="users" class="admin-section hidden">
             <h1 class="text-3xl font-bold mb-6">Gestion des Utilisateurs</h1>
-            <div class="bg-white rounded-2xl border overflow-hidden">
-                <table class="w-full text-left border-collapse">
+            <div class="bg-white rounded-2xl border overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr class="bg-gray-50 border-b text-xs uppercase font-bold text-gray-500">
                             <th class="p-4">Utilisateur</th>
@@ -75,8 +87,8 @@
         </section>
 
         <!-- Edit User Modal -->
-        <div id="editUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-2xl w-96">
+        <div id="editUserModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white p-6 rounded-2xl w-full max-w-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold">Modifier l'utilisateur</h2>
                     <button class="text-gray-400 font-bold" onclick="toggleModal('editUserModal')">✕</button>
@@ -105,13 +117,13 @@
             <h1 class="text-3xl font-bold mb-6">Demandes d'accès</h1>
             <div class="space-y-4">
                 {% for req in contact_requests %}
-                    <div class="bg-white p-6 rounded-2xl border flex justify-between items-center">
-                        <div>
+                    <div class="bg-white p-6 rounded-2xl border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="flex-1">
                             <h3 class="font-bold text-lg">{{ req.name }}</h3>
                             <p class="text-sm text-gray-600">Email : {{ req.email }} | Téléphone : {{ req.phone|default:"Non renseigné" }}</p>
                             <p class="text-sm text-gray-500 mt-2">{{ req.message }}</p>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-wrap gap-2 w-full md:w-auto">
                             {% if req.status == 'pending' %}
                                 <form method="POST" action="{% url 'handle_contact_request' req.id 'approve' %}" onsubmit="handleAjaxForm(event)">
                                     {% csrf_token %}
@@ -136,7 +148,7 @@
 
         <section id="assignments" class="admin-section hidden">
             <h1 class="text-3xl font-bold mb-6">Affectations de Quiz</h1>
-            <div class="bg-white p-6 rounded-2xl border max-w-xl">
+            <div class="bg-white p-6 rounded-2xl border w-full max-w-xl">
                 <form id="assignment-form" class="space-y-4">
                     {% csrf_token %}
                     <div>
@@ -273,8 +285,8 @@
 <!-- Modals -->
 {% for theme in quiz_themes %}
     {% for quiz in theme.quizzes.all %}
-    <div id="questionsModal-{{ quiz.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-2xl w-[600px] max-h-[80vh] overflow-y-auto">
+    <div id="questionsModal-{{ quiz.id }}" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">Gérer les questions : {{ quiz.title }}</h2>
                 <button onclick="toggleModal('questionsModal-{{ quiz.id }}')" class="font-bold">×</button>
@@ -367,8 +379,8 @@
     {% endfor %}
 {% endfor %}
 
-<div id="addQuizToThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-2xl w-96">
+<div id="addQuizToThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-sm">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">Ajouter un quiz au thème</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addQuizToThemeModal')">✕</button>
@@ -389,8 +401,8 @@
     </div>
 </div>
 
-<div id="addThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-2xl w-96">
+<div id="addThemeModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-sm">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">Ajouter un thème de quiz</h2>
             <button class="text-gray-400 font-bold" onclick="toggleModal('addThemeModal')">✕</button>
@@ -407,6 +419,15 @@
 <script>
     function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
     
+    function toggleMobileSidebar() {
+        const sidebar = document.getElementById('admin-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (sidebar && overlay) {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    }
+    
     // Tab switching and localStorage persistence
     const ACTIVE_SECTION_KEY = 'aidadmin_active_section';
 
@@ -422,6 +443,9 @@
     document.querySelectorAll('.admin-nav').forEach(btn => {
         btn.onclick = () => {
             switchSection(btn.dataset.section);
+            if (window.innerWidth < 1024) {
+                toggleMobileSidebar();
+            }
         };
     });
 
