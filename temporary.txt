@@ -30,15 +30,14 @@ graph LR
                 UC_Auth4_2(("Changer le Nom de l'Utilisateur")):::usecase
             end
 
-            %% Subsystem 2: Moteur de Evaluation & Quiz
-            subgraph SubQuiz["Moteur de Evaluation & Quiz"]
+            %% Subsystem 2: Moteur de Evaluation & Quiz (Candidat)
+            subgraph SubCandidateQuiz["Espace Candidat - Évaluation & Quiz"]
                 direction TB
-                UC_Quiz1(("Sélection de Quiz")):::usecase
-                UC_Quiz2(("Passation de Quiz")):::usecase
-                UC_Quiz3(("Calcul des Résultats")):::usecase
-                UC_Quiz4(("Historique & Statistiques")):::usecase
-                UC_Quiz5(("Soumission Feedback")):::usecase
-                UC_Quiz6(("Gestion des Réponses")):::usecase
+                C_Dashboard(("Tableau de bord utilisateur")):::usecase
+                C_TakeQuiz(("Passer un test d'évaluation Quiz")):::usecase
+                C_AnswerQuestions(("Répondre aux questions")):::usecase
+                C_ViewResults(("Voir les Résultats & Corrections")):::usecase
+                C_History(("Consulter l'Historique")):::usecase
             end
 
             %% Subsystem 3: Administration & Gestion de Contenu
@@ -77,19 +76,18 @@ graph LR
         end
     end
 
-    %% Associations Acteurs -> Fonctions (Ovals)
+    %% Associations Acteurs -> Fonctions (Candidat)
     Candidate --- UC_Auth2
     Candidate --- UC_Auth3
     Candidate --- UC_Auth4
-    Candidate --- UC_Quiz1
-    Candidate --- UC_Quiz2
-    Candidate --- UC_Quiz4
+    Candidate --- C_Dashboard
+    Candidate --- C_TakeQuiz
+    Candidate --- C_History
     Candidate --- UC_Sup1
     Candidate --- UC_Sup2
     Candidate --- UC_Sup3
-    Candidate --- UC_Quiz5
-    Candidate --- UC_Quiz6
 
+    %% Associations Acteurs -> Admin
     StaffAdmin --- UC_Auth2
     StaffAdmin --- UC_Auth4
     StaffAdmin --- UC_Adm1
@@ -99,10 +97,17 @@ graph LR
     StaffAdmin --- UC_Adm4
     StaffAdmin --- UC_Adm6
 
+    %% Associations API
     BrevoAPI --- UC_Auth3_1
     BrevoAPI --- UC_Auth4_1_1
 
-    %% Relations UML Include & Extend
+    %% Relations UML Include & Extend pour Candidat
+    C_Dashboard .->|"<<include>>"| C_TakeQuiz
+    C_TakeQuiz .->|"<<include>>"| C_AnswerQuestions
+    C_TakeQuiz .->|"<<include>>"| C_ViewResults
+    C_Dashboard .->|"<<include>>"| C_History
+
+    %% Relations UML Include & Extend Générales
     UC_Auth2 .->|"<<include>>"| UC_Auth2_1
     UC_Auth3 .->|"<<include>>"| UC_Auth3_1
     UC_Auth3_1 .->|"<<include>>"| UC_Auth3_2
@@ -112,9 +117,6 @@ graph LR
     UC_Auth4_1 .->|"<<include>>"| UC_Auth4_1_1
     UC_Auth4_1_1 .->|"<<include>>"| UC_Auth4_1_2
     UC_Auth4 -.->|"<<extend>>"| UC_Auth4_2
-
-    UC_Quiz2 .->|"<<include>>"| UC_Quiz3
-    UC_Quiz2 .->|"<<include>>"| UC_Quiz6
     
     UC_Adm1 -.->|"<<extend>>"| UC_Adm1_1
     UC_Adm1 -.->|"<<extend>>"| UC_Adm1_2
@@ -131,6 +133,4 @@ graph LR
     UC_Adm6 .->|"<<include>>"| UC_Adm6_1
     UC_Adm6 .->|"<<include>>"| UC_Adm6_2
 
-    UC_Quiz2 -.->|"<<extend>>"| UC_Quiz4
     UC_Sup3 -.->|"<<extend>>"| UC_Sup2
-```
