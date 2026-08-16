@@ -1,0 +1,136 @@
+graph LR
+    classDef usecase fill:#e1f5fe,stroke:#01579b,stroke-width:1px;
+
+    %% Acteurs
+    Candidate([Candidate])
+    StaffAdmin([Staff / Admin])
+    BrevoAPI([Brevo Email API])
+
+    %% Système Global
+    subgraph AIDSystem["AID System"]
+        direction LR
+
+        %% Système 1: AID quiz
+        subgraph AIDquiz["AID quiz"]
+            direction LR
+
+            %% Subsystem 1: Authentification & Gestion de Compte
+            subgraph SubAuth["Authentification & Gestion de Compte"]
+                direction TB
+                UC_Auth2(("Connexion")):::usecase
+                UC_Auth2_1(("Entrer Username & Mot de Passe")):::usecase
+                UC_Auth3(("Récupération Mot de Passe")):::usecase
+                UC_Auth3_1(("Entrer Gmail")):::usecase
+                UC_Auth3_2(("Entrer le Code PIN")):::usecase
+                
+                UC_Auth4(("Gestion de Profil")):::usecase
+                UC_Auth4_1(("Changer le Mot de Passe")):::usecase
+                UC_Auth4_1_1(("Entrer Code PIN")):::usecase
+                UC_Auth4_1_2(("Entrer Nouveau Mot de Passe")):::usecase
+                UC_Auth4_2(("Changer le Nom de l'Utilisateur")):::usecase
+            end
+
+            %% Subsystem 2: Moteur de Evaluation & Quiz
+            subgraph SubQuiz["Moteur de Evaluation & Quiz"]
+                direction TB
+                UC_Quiz1(("Sélection de Quiz")):::usecase
+                UC_Quiz2(("Passation de Quiz")):::usecase
+                UC_Quiz3(("Calcul des Résultats")):::usecase
+                UC_Quiz4(("Historique & Statistiques")):::usecase
+                UC_Quiz5(("Soumission Feedback")):::usecase
+                UC_Quiz6(("Gestion des Réponses")):::usecase
+            end
+
+            %% Subsystem 3: Administration & Gestion de Contenu
+            subgraph SubAdmin["Administration & Gestion de Contenu"]
+                direction TB
+                UC_Adm1(("Gestion Utilisateurs")):::usecase
+                UC_Adm1_1(("Ajout Utilisateur")):::usecase
+                UC_Adm1_2(("Supprimer Utilisateur")):::usecase
+                
+                UC_Adm2(("Édition des Quiz")):::usecase
+                UC_Adm2_1(("Choisir Thème")):::usecase
+                UC_Adm2_1_1(("Créer Nouveau Thème")):::usecase
+                UC_Adm2_1_2(("Changer Thème")):::usecase
+                UC_Adm2_1_3(("Supprimer Thème")):::usecase
+
+                UC_Adm2_2(("Choisir Question")):::usecase
+                UC_Adm2_3(("Choisir Réponse")):::usecase
+                UC_Adm2_4(("Marquer comme Correct")):::usecase
+                
+                UC_Adm6(("Affecter Utilisateur a un Quiz")):::usecase
+                UC_Adm6_1(("Choisir Utilisateur")):::usecase
+                UC_Adm6_2(("Choisir Sujet")):::usecase
+
+                UC_Adm3(("Gestion des Questions")):::usecase
+                UC_Adm4(("Gestion des Réponses")):::usecase
+                UC_Adm5(("Supervision des Scores")):::usecase
+            end
+        end
+
+        %% Système 2: Blog
+        subgraph BlogSystem["Blog"]
+            direction TB
+            UC_Sup1(("Accueil & Catalogue")):::usecase
+            UC_Sup2(("Accès Blog")):::usecase
+            UC_Sup3(("Demande de Support")):::usecase
+        end
+    end
+
+    %% Associations Acteurs -> Fonctions (Ovals)
+    Candidate --- UC_Auth2
+    Candidate --- UC_Auth3
+    Candidate --- UC_Auth4
+    Candidate --- UC_Quiz1
+    Candidate --- UC_Quiz2
+    Candidate --- UC_Quiz4
+    Candidate --- UC_Sup1
+    Candidate --- UC_Sup2
+    Candidate --- UC_Sup3
+    Candidate --- UC_Quiz5
+    Candidate --- UC_Quiz6
+
+    StaffAdmin --- UC_Auth2
+    StaffAdmin --- UC_Auth4
+    StaffAdmin --- UC_Adm1
+    StaffAdmin --- UC_Adm2
+    StaffAdmin --- UC_Adm5
+    StaffAdmin --- UC_Adm3
+    StaffAdmin --- UC_Adm4
+    StaffAdmin --- UC_Adm6
+
+    BrevoAPI --- UC_Auth3_1
+    BrevoAPI --- UC_Auth4_1_1
+
+    %% Relations UML Include & Extend
+    UC_Auth2 .->|"<<include>>"| UC_Auth2_1
+    UC_Auth3 .->|"<<include>>"| UC_Auth3_1
+    UC_Auth3_1 .->|"<<include>>"| UC_Auth3_2
+    UC_Auth3 -.->|"<<extend>>"| UC_Auth2
+
+    UC_Auth4 -.->|"<<extend>>"| UC_Auth4_1
+    UC_Auth4_1 .->|"<<include>>"| UC_Auth4_1_1
+    UC_Auth4_1_1 .->|"<<include>>"| UC_Auth4_1_2
+    UC_Auth4 -.->|"<<extend>>"| UC_Auth4_2
+
+    UC_Quiz2 .->|"<<include>>"| UC_Quiz3
+    UC_Quiz2 .->|"<<include>>"| UC_Quiz6
+    
+    UC_Adm1 -.->|"<<extend>>"| UC_Adm1_1
+    UC_Adm1 -.->|"<<extend>>"| UC_Adm1_2
+
+    UC_Adm2 .->|"<<include>>"| UC_Adm2_1
+    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_1
+    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_2
+    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_3
+
+    UC_Adm2 .->|"<<include>>"| UC_Adm2_2
+    UC_Adm2 .->|"<<include>>"| UC_Adm2_3
+    UC_Adm2_3 -.->|"<<extend>>"| UC_Adm2_4
+
+    UC_Adm6 .->|"<<include>>"| UC_Adm6_1
+    UC_Adm6 .->|"<<include>>"| UC_Adm6_2
+
+    UC_Quiz2 -.->|"<<extend>>"| UC_Quiz4
+    UC_Sup3 -.->|"<<extend>>"| UC_Sup2
+```

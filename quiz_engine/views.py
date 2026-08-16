@@ -1,4 +1,6 @@
 import logging
+import pandas as pd
+import math
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -209,15 +211,88 @@ def aidadminpage(request):
         contact_requests = list(ContactRequest.objects.all().order_by('-created_at'))
     except Exception:
         contact_requests = []
+
+    # Pandas and Math advanced analytics computation for the Admin Apercu / Overview page
+    assignments_qs = Assignment.objects.all().select_related('quiz', 'user')
+    assignments_data = list(assignments_qs.values('id', 'status', 'score', 'assigned_at', 'completed_at', 'quiz__title', 'user__username'))
     
+    if assignments_data:
+        df_assign = pd.DataFrame(assignments_data)
+    else:
+        df_assign = pd.DataFrame(columns=['id', 'status', 'score', 'assigned_at', 'completed_at', 'quiz__title', 'user__username'])
+
+    users_qs = User.objects.filter(is_staff=False).select_related('profile')
+    users_data = list(users_qs.values('id', 'username', 'email', 'date_joined'))
+    if users_data:
+        df_users = pd.DataFrame(users_data)
+    else:
+        df_users = pd.DataFrame(columns=['id', 'username', 'email', 'date_joined'])
+
+    total_users_count = len(df_users)
+    total_assignments_count = len(df_assign)
+    completed_df = df_assign[df_assign['status'] == 'completed'] if not df_assign.empty else pd.DataFrame()
+    completed_count = len(completed_df)
+    pending_count = total_assignments_count - completed_count
+
+    # Math & Pandas stats calculations
+    if completed_count > 0:
+        mean_score = float(completed_df['score'].mean())
+        median_score = float(completed_df['score'].median())
+        std_score = float(completed_df['score'].std()) if completed_count > 1 else 0.0
+        if math.isnan(std_score):
+            std_score = 0.0
+        min_score = int(completed_df['score'].min())
+        max_score = int(completed_df['score'].max())
+        success_rate = float((completed_df['score'] >= 50).mean() * 100)
+    else:
+        mean_score = 0.0
+        median_score = 0.0
+        std_score = 0.0
+        min_score = 0
+        max_score = 0
+        success_rate = 0.0
+
+    # Quiz breakdown stats using pandas groupby
+    quiz_stats = []
+    if not completed_df.empty and 'quiz__title' in completed_df.columns:
+        grouped = completed_df.groupby('quiz__title').agg(
+            attempts=('score', 'count'),
+            avg_score=('score', 'mean'),
+            max_score=('score', 'max'),
+            min_score=('score', 'min')
+        ).reset_index()
+        for _, row in grouped.iterrows():
+            quiz_stats.append({
+                'title': row['quiz__title'],
+                'attempts': int(row['attempts']),
+                'avg_score': round(float(row['avg_score']), 1),
+                'max_score': int(row['max_score']),
+                'min_score': int(row['min_score'])
+            })
+
+    analytics_stats = {
+        'total_users': total_users_count,
+        'total_assignments': total_assignments_count,
+        'completed_count': completed_count,
+        'pending_count': pending_count,
+        'mean_score': round(mean_score, 1),
+        'median_score': round(median_score, 1),
+        'std_score': round(std_score, 1),
+        'min_score': min_score,
+        'max_score': max_score,
+        'success_rate': round(success_rate, 1),
+        'quiz_stats': quiz_stats,
+    }
+
     context = {
         'quiz_themes': quiz_themes,
         'themes': quiz_themes, # keeping both for backward compatibility with templates if needed
         'quizzes': quizzes,
         'subjects': Subject.objects.all(),
-        'users': User.objects.filter(is_staff=False).select_related('profile'),
+        'users': users_qs,
         'contact_requests': contact_requests,
         'total_quizzes': quizzes.count(),
+        'analytics': analytics_stats,
     }
     return render(request, 'aidadminpage.html', context)
 
