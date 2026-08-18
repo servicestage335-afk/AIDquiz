@@ -1,136 +1,57 @@
-graph LR
-    classDef usecase fill:#e1f5fe,stroke:#01579b,stroke-width:1px;
+sequenceDiagram
+    autonumber
+    actor Admin as Administrateur
+    participant UI_Admin as Interface d'Administration (aidadminpage)
+    participant Controller as Contrôleur (Views / Django)
+    participant DB as Base de données (ORM)
 
-    %% Acteurs
-    Candidate([Candidate])
-    StaffAdmin([Staff / Admin])
-    BrevoAPI([Brevo Email API])
+    %% 1. Connexion & Accès au Panneau Admin
+    Admin->>UI_Admin: Saisit ses identifiants administrateur
+    UI_Admin->>Controller: Requête HTTP POST /login/
+    Controller->>DB: Vérifie si is_staff = True
+    DB-->>Controller: Autorisation accordée
+    Controller-->>UI_Admin: Redirection vers /aidadminpage/
+    UI_Admin-->>Admin: Affiche le tableau de bord administrateur (CRUD & Analytics)
 
-    %% Système Global
-    subgraph AIDSystem["AID System"]
-        direction LR
+    %% 2. Gestion des Utilisateurs (CRUD)
+    alt Gestion des Comptes Candidats
+        Admin->>UI_Admin: Clique sur "Ajouter Utilisateur" ou "Supprimer"
+        UI_Admin->>Controller: Requête AJAX (POST /add_user/ ou /delete_user/<id>/)
+        Controller->>DB: Crée ou supprime l'enregistrement User & UserProfile
+        DB-->>Controller: Confirmation de l'opération
+        Controller-->>UI_Admin: Réponse JSON (status: success)
+        UI_Admin-->>Admin: Met à jour dynamiquement la liste des utilisateurs
+    end
 
-        %% Système 1: AID quiz
-        subgraph AIDquiz["AID quiz"]
-            direction LR
-
-            %% Subsystem 1: Authentification & Gestion de Compte
-            subgraph SubAuth["Authentification & Gestion de Compte"]
-                direction TB
-                UC_Auth2(("Connexion")):::usecase
-                UC_Auth2_1(("Entrer Username & Mot de Passe")):::usecase
-                UC_Auth3(("Récupération Mot de Passe")):::usecase
-                UC_Auth3_1(("Entrer Gmail")):::usecase
-                UC_Auth3_2(("Entrer le Code PIN")):::usecase
-                
-                UC_Auth4(("Gestion de Profil")):::usecase
-                UC_Auth4_1(("Changer le Mot de Passe")):::usecase
-                UC_Auth4_1_1(("Entrer Code PIN")):::usecase
-                UC_Auth4_1_2(("Entrer Nouveau Mot de Passe")):::usecase
-                UC_Auth4_2(("Changer le Nom de l'Utilisateur")):::usecase
-            end
-
-            %% Subsystem 2: Moteur de Evaluation & Quiz (Candidat)
-            subgraph SubCandidateQuiz["Espace Candidat - Évaluation & Quiz"]
-                direction TB
-                C_Dashboard(("Tableau de bord utilisateur")):::usecase
-                C_TakeQuiz(("Passer un test d'évaluation Quiz")):::usecase
-                C_AnswerQuestions(("Répondre aux questions")):::usecase
-                C_ViewResults(("Voir les Résultats & Corrections")):::usecase
-                C_History(("Consulter l'Historique")):::usecase
-            end
-
-            %% Subsystem 3: Administration & Gestion de Contenu
-            subgraph SubAdmin["Administration & Gestion de Contenu"]
-                direction TB
-                UC_Adm1(("Gestion Utilisateurs")):::usecase
-                UC_Adm1_1(("Ajout Utilisateur")):::usecase
-                UC_Adm1_2(("Supprimer Utilisateur")):::usecase
-                
-                UC_Adm2(("Édition des Quiz")):::usecase
-                UC_Adm2_1(("Choisir Thème")):::usecase
-                UC_Adm2_1_1(("Créer Nouveau Thème")):::usecase
-                UC_Adm2_1_2(("Changer Thème")):::usecase
-                UC_Adm2_1_3(("Supprimer Thème")):::usecase
-
-                UC_Adm2_2(("Choisir Question")):::usecase
-                UC_Adm2_3(("Choisir Réponse")):::usecase
-                UC_Adm2_4(("Marquer comme Correct")):::usecase
-                
-                UC_Adm6(("Affecter Utilisateur a un Quiz")):::usecase
-                UC_Adm6_1(("Choisir Utilisateur")):::usecase
-                UC_Adm6_2(("Choisir Sujet")):::usecase
-
-                UC_Adm3(("Gestion des Questions")):::usecase
-                UC_Adm4(("Gestion des Réponses")):::usecase
-                UC_Adm5(("Supervision des Scores")):::usecase
-            end
-        end
-
-        %% Système 2: Blog
-        subgraph BlogSystem["Blog"]
-            direction TB
-            UC_Sup1(("Accueil & Catalogue")):::usecase
-            UC_Sup2(("Accès Blog")):::usecase
-            UC_Sup3(("Demande de Support")):::usecase
+    %% 3. Édition et Paramétrage des Quiz (Thèmes, Sujets, Questions, Réponses)
+    rect rgb(245, 245, 255)
+        Note right of Admin: Cycle de gestion pédagogique (CRUD Contenu)
+        Admin->>UI_Admin: Crée un thème, un sujet ou un quiz
+        UI_Admin->>Controller: Requête AJAX (POST /add_theme/, /add_quiz/)
+        Controller->>DB: Enregistre les entités QuizTheme, Subject, Quiz
+        DB-->>Controller: ID créé
+        
+        loop Pour chaque question du quiz
+            Admin->>UI_Admin: Ajoute une question et ses propositions de réponses
+            UI_Admin->>Controller: Requête AJAX (POST /add_question/, /add_answer/)
+            Controller->>DB: Enregistre Question et Answer (avec is_correct)
+            DB-->>Controller: Confirmation
         end
     end
 
-    %% Associations Acteurs -> Fonctions (Candidat)
-    Candidate --- UC_Auth2
-    Candidate --- UC_Auth3
-    Candidate --- UC_Auth4
-    Candidate --- C_Dashboard
-    Candidate --- C_TakeQuiz
-    Candidate --- C_History
-    Candidate --- UC_Sup1
-    Candidate --- UC_Sup2
-    Candidate --- UC_Sup3
+    %% 4. Affectation d'un Quiz à un Candidat
+    Admin->>UI_Admin: Sélectionne un candidat et un quiz, puis clique sur "Affecter"
+    UI_Admin->>Controller: Requête AJAX (POST /assign_quiz/)
+    Controller->>DB: Crée une nouvelle instance Assignment (status='pending')
+    DB-->>Controller: Assignation enregistrée
+    Controller-->>UI_Admin: Réponse JSON (status: success)
+    UI_Admin-->>Admin: Affiche la confirmation de l'affectation
 
-    %% Associations Acteurs -> Admin
-    StaffAdmin --- UC_Auth2
-    StaffAdmin --- UC_Auth4
-    StaffAdmin --- UC_Adm1
-    StaffAdmin --- UC_Adm2
-    StaffAdmin --- UC_Adm5
-    StaffAdmin --- UC_Adm3
-    StaffAdmin --- UC_Adm4
-    StaffAdmin --- UC_Adm6
-
-    %% Associations API
-    BrevoAPI --- UC_Auth3_1
-    BrevoAPI --- UC_Auth4_1_1
-
-    %% Relations UML Include & Extend pour Candidat
-    C_Dashboard .->|"<<include>>"| C_TakeQuiz
-    C_TakeQuiz .->|"<<include>>"| C_AnswerQuestions
-    C_TakeQuiz .->|"<<include>>"| C_ViewResults
-    C_Dashboard .->|"<<include>>"| C_History
-
-    %% Relations UML Include & Extend Générales
-    UC_Auth2 .->|"<<include>>"| UC_Auth2_1
-    UC_Auth3 .->|"<<include>>"| UC_Auth3_1
-    UC_Auth3_1 .->|"<<include>>"| UC_Auth3_2
-    UC_Auth3 -.->|"<<extend>>"| UC_Auth2
-
-    UC_Auth4 -.->|"<<extend>>"| UC_Auth4_1
-    UC_Auth4_1 .->|"<<include>>"| UC_Auth4_1_1
-    UC_Auth4_1_1 .->|"<<include>>"| UC_Auth4_1_2
-    UC_Auth4 -.->|"<<extend>>"| UC_Auth4_2
-    
-    UC_Adm1 -.->|"<<extend>>"| UC_Adm1_1
-    UC_Adm1 -.->|"<<extend>>"| UC_Adm1_2
-
-    UC_Adm2 .->|"<<include>>"| UC_Adm2_1
-    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_1
-    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_2
-    UC_Adm2_1 -.->|"<<extend>>"| UC_Adm2_1_3
-
-    UC_Adm2 .->|"<<include>>"| UC_Adm2_2
-    UC_Adm2 .->|"<<include>>"| UC_Adm2_3
-    UC_Adm2_3 -.->|"<<extend>>"| UC_Adm2_4
-
-    UC_Adm6 .->|"<<include>>"| UC_Adm6_1
-    UC_Adm6 .->|"<<include>>"| UC_Adm6_2
-
-    UC_Sup3 -.->|"<<extend>>"| UC_Sup2
+    %% 5. Supervision et Analyses Statistiques (Pandas / Math)
+    Admin->>UI_Admin: Consulte la section "Analyses et Statistiques"
+    UI_Admin->>Controller: Requête HTTP GET /aidadminpage/ (calculs Pandas/Math)
+    Controller->>DB: Extrait toutes les assignations et scores
+    DB-->>Controller: Données brutes
+    Note over Controller: Calculs de moyenne, médiane, écart-type, taux de réussite et regroupements (groupby)
+    Controller-->>UI_Admin: Rendu de la page avec les KPI et tableaux de performance
+    UI_Admin-->>Admin: Affiche les indicateurs statistiques globaux et par quiz

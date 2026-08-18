@@ -288,6 +288,7 @@ def aidadminpage(request):
         'quiz_themes': quiz_themes,
         'themes': quiz_themes, # keeping both for backward compatibility with templates if needed
         'quizzes': quizzes,
+        'all_quizzes': quizzes,
         'subjects': Subject.objects.all(),
         'users': users_qs,
         'contact_requests': contact_requests,
